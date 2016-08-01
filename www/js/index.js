@@ -147,6 +147,12 @@ var app = {
                 $xml = $(xmlDoc),
                 $toc = $xml.find("TOC");
                 alert('TOC: ' + $lastUpdate);
+
+                $($toc).each(function () {
+                    alert('in each');
+                    //alert($(this).find("Page[Name]>controls>name").text());
+                });
+
                 $dataItem = $toc.find('dataItem');
                 alert('$dataItem count: ' + $dataItem.length);
             },
