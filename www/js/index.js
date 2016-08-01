@@ -41,7 +41,7 @@ var app = {
        
         app.receivedEvent('deviceready');
         db = window.sqlitePlugin.openDatabase({ name: "my.db" });
-
+        alert('db open - calling updatTOC');
         app.updateTOC();
     },
 
