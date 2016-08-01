@@ -80,7 +80,9 @@ var app = {
 
             db.transaction(function (tx) {
                 tx.executeSql("select top 1 lastUpdateText as lastUpdate from LastTOCUpdate;", [], function (tx, res) {
-                    return res.rows.item(0).lastUpdate;
+                    var retval = res.rows.item(0).lastUpdate;
+                    alert('result: ' + retval);
+                    return retval;
                 });
             });
         });
