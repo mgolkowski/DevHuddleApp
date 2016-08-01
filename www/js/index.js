@@ -86,7 +86,7 @@ var app = {
                                 var retval = res.rows.item(0).lastUpdate;
                                 alert('result: ' + retval);
 
-                                app.getServerTOCUpdate(retval);
+                                app.doServerTOCUpdate(retval);
 
                             }, function (e) {
                                 alert("ERROR: " + e.message);
@@ -114,16 +114,10 @@ var app = {
                 alert(data);
                 var xmlDoc = $.parseXML(data),
                 $xml = $(xmlDoc),
-                $title = $xml.find("title");
+                $lastUpdate = $xml.find("lastUpdate");
 
-                /* append "RSS Title" to #someElement */
-                $("#someElement").append($title.text());
+                alert('LAST UPDATE FROM SERVER: ' + $lastUpdate.text());
 
-                /* change the title to "XML Title" */
-                $title.text("XML Title");
-
-                /* append "XML Title" to #anotherElement */
-                $("#anotherElement").append($title.text());
 
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
