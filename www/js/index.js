@@ -17,7 +17,7 @@
  * under the License.
  */
 var db;
-var baseURL = 'https://raw.githubusercontent.com/mgolkowski/WorldVisionApp/master/www/';
+var baseURL = 'https://raw.githubusercontent.com/mgolkowski/DevHuddleApp/master/www/';
 var lastUpdateXML = 'LastTOCUpdate.xml';
 var tocXML = 'TOC.xml';
 
