@@ -147,6 +147,8 @@ var app = {
 
     refreshTOCDB: function (data) {
 
+        alert('in refreshTOCDB');
+
         db.transaction(function (tx) {
 
             // Create DB table (if not already created) to store last TOC update
@@ -154,7 +156,7 @@ var app = {
             tx.executeSql('CREATE TABLE IF NOT EXISTS TOC (id integer, title text, dscr text, lastUpdate text)');
             alert('in delete');
             tx.executeSql('DELETE FROM TOC');
-            alert('after delete')
+            alert('after delete');
             db.transaction(function (tx) {
 
             // 2) loop through all TOC items and put into databse
