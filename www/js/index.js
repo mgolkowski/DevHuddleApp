@@ -142,29 +142,11 @@ var app = {
             type: 'GET',
             success: function (data) {
 
-                alert(data);
-                var xmlDoc = $.parseXML(data),
+                var xmlDoc = $.parseXML(data);
                 $xml = $(xmlDoc);
-                //$toc = $xml.find("TOC");
 
-
-                // 1) delete all TOC in database
-
-                // 2) loop through all TOC items and put into databse
-
-                $($xml).find('dataItem').each(function () {
-
-                    var id = $(this).find('id').text();
-                    var title = $(this).find('title').text();
-                    var dscr = $(this).find('dscr').text();
-
-                    alert('data item found: ' + id + ', ' + title + ', ' + dscr);
-                    //alert($(this).find("Page[Name]>controls>name").text());
-                });
-
-                // 3) update timestamp
-
-                alert('done');
+                app.refreshTOCDB($xml);
+                
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Error status :" + textStatus);
@@ -172,6 +154,42 @@ var app = {
                 alert("Error message :" + XMLHttpRequest.responseXML);
             }
         });
+    },
+
+    refreshTOCDB: function (data) {
+
+        db.transaction(function (tx) {
+
+            // Create DB table (if not already created) to store last TOC update
+            tx.executeSql('CREATE TABLE IF NOT EXISTS TOC (id integer, title text, dscr text)');
+            db.transaction(function (tx) {
+
+                // 1) delete all TOC in database
+                tx.executeSql("DELETE FROM TOC", [], function (tx, res) {
+
+                    // 2) loop through all TOC items and put into databse
+                    $(data).find('dataItem').each(function () {
+
+                        var id = $(this).find('id').text();
+                        var title = $(this).find('title').text();
+                        var dscr = $(this).find('dscr').text();
+
+                        tx.executeSql("INSERT INTO TOC (id, title, dscr) VALUES (?,?,?)", [id, title, dscr], function (tx, res) {
+                            alert('row inserted');
+                        }, function (e) {
+                            alert("ERROR: " + e.message);
+                        });
+                    });
+
+                    // 3) update timestamp
+
+                }, function (e) {
+                    alert("ERROR: " + e.message);
+                });
+
+            });
+        });
+        alert('done');
     },
 
     setupDatabase: function () {
