@@ -41,54 +41,69 @@ var app = {
        
         app.receivedEvent('deviceready');
         db = window.sqlitePlugin.openDatabase({ name: "my.db" });
-        alert('db open - calling updatTOC');
-        app.updateTOC();
+        
+        app.createDatabases();
+    },
+
+    // create databases, then call updateTOC when done
+    createDatabases: function () {
+        alert('in createDatabases');
+
+        db.transaction(function (tx) {
+
+            tx.executeSql('CREATE TABLE IF NOT EXISTS LastTOCUpdate (lastUpdate text)');
+            db.transaction(function (tx) {
+                tx.executeSql('CREATE TABLE IF NOT EXISTS TOC (id integer, title text, dscr text)');
+                db.transaction(function (tx) {
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS Article (id integer, html text)');
+                    db.transaction(function (tx) {
+
+                        alert('databases created.');
+                        app.updateTOC(tx);
+                    })
+                })
+            });
+        });
     },
 
     // Reads the last update timestamp of the table of contents from the database
     // If never updated (first time) then set it to 1900-01-01 to force initial refresh
     // Then, compare this timestamp against server, if if server is newer then refresh TOC 
-    updateTOC: function () {
+    updateTOC: function (tx) {
 
-        db.transaction(function (tx) {
+        alert('in updateTOC');
 
-            // Create DB table (if not already created) to store last TOC update
-            tx.executeSql('CREATE TABLE IF NOT EXISTS LastTOCUpdate (lastUpdate text)');
-            db.transaction(function (tx) {
+        // DB exists or has been created.  Check for a row to hold data
+        tx.executeSql("SELECT COUNT(*) AS cnt from LastTOCUpdate;", [], function (tx, res) {
+            var numRows = res.rows.item(0).cnt;
 
-                // DB exists or has been created.  Check for a row to hold data
-                tx.executeSql("SELECT COUNT(*) AS cnt from LastTOCUpdate;", [], function (tx, res) {
-                    var numRows = res.rows.item(0).cnt;
+            if (numRows == 0) { // no row =first time - set last update to 1900 to force initial refresh
 
-                    if (numRows == 0) { // no row =first time - set last update to 1900 to force initial refresh
-
-                        tx.executeSql("INSERT INTO LastTOCUpdate (lastUpdate) VALUES (?)", ["1900-01-01"], function (tx, res) {
+                tx.executeSql("INSERT INTO LastTOCUpdate (lastUpdate) VALUES (?)", ["1900-01-01"], function (tx, res) {
                             
 
-                            app.getServerTOCUpdate("1900-01-01");
+                    app.getServerTOCUpdate("1900-01-01");
 
-                        }, function (e) {
-                            alert("ERROR: " + e.message);
-                        });
-
-                    } else { // already has a row - read it
-
-                        db.transaction(function (tx) {
-                            tx.executeSql("SELECT lastUpdate from LastTOCUpdate;", [], function (tx, res) {
-
-                                var retval = res.rows.item(0).lastUpdate;
-                                app.doServerTOCUpdate(retval);
-
-                            }, function (e) {
-                                alert("ERROR: " + e.message);
-                            });
-                        });
-                    }
+                }, function (e) {
+                    alert("ERROR: " + e.message);
                 });
-            });
+
+            } else { // already has a row - read it
+
+                db.transaction(function (tx) {
+                    tx.executeSql("SELECT lastUpdate from LastTOCUpdate;", [], function (tx, res) {
+
+                        var retval = res.rows.item(0).lastUpdate;
+                        app.doServerTOCUpdate(retval);
+
+                    }, function (e) {
+                        alert("ERROR: " + e.message);
+                    });
+                });
+            }
         });
     },
-
+    
     // checks TOC timestamp on server, and if > lastTimestamp then refresh TOC in database
     // then renders splash screen
 
