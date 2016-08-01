@@ -43,8 +43,41 @@ var app = {
         app.receivedEvent('deviceready');
         db = window.sqlitePlugin.openDatabase({ name: "my.db" });
 
-        alert('about to call db');
-        app.setupDatabase();
+        alert(' getLastContentsUpdate(): ' + getLastContentsUpdate());
+        //app.setupDatabase();
+    },
+
+    // Reads the last update timestamp of the table of contents from the database
+    // If never updated (first time) then set it to 1900-01-01 to force initial refresh
+    getLastContentsUpdate: function () {
+
+        db.transaction(function (tx) {
+
+
+            tx.executeSql('CREATE TABLE IF NOT EXISTS LastTOCUpdate (lastUpdate text)');
+
+            var numRows = 0;
+            db.transaction(function (tx) {
+                tx.executeSql("select count(id) as cnt from test_table;", [], function (tx, res) {
+                    numRows = res.rows.item(0).cnt;
+                });
+            });
+
+            alert('num rows: ' + numRows);
+
+            if (numRows == 0) { // first time - set last update to 1900 to force initial refresh
+                alert('about to insert row');
+                tx.executeSql("INSERT INTO LastTOCUpdate (lastUpdate) VALUES (?)", ["1900-01-01"]);
+            } else {
+                alert('already has a row!');
+            }
+
+            db.transaction(function (tx) {
+                tx.executeSql("select top 1 lastUpdateText as lastUpdate from LastTOCUpdate;", [], function (tx, res) {
+                    return res.rows.item(0).lastUpdate;
+                });
+            });
+        });
     },
 
     setupDatabase: function () {
