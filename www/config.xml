@@ -117,7 +117,9 @@
     -->
 
     <access origin="*"/>
-    <!-- Added the following intents to support the removal of whitelist code from base cordova to a plugin -->
+    <access origin="https://raw.githubusercontent.com"/>
+            
+    <!-- Added the following intents to support the removal of whitelist code from base cordova to a plugin --
     <!-- Whitelist configuration. Refer to https://cordova.apache.org/docs/en/edge/guide_appdev_whitelist_index.md.html -->
     <plugin name="cordova-plugin-whitelist" version="1" />
     <plugin name="com.brodysoft.sqliteplugin" spec="1.0.6" source="pgb" />
