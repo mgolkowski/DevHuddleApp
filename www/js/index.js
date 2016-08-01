@@ -147,12 +147,23 @@ var app = {
                 $xml = $(xmlDoc);
                 //$toc = $xml.find("TOC");
 
-                // loop through all TOC items and put into databse
+
+                // 1) delete all TOC in database
+
+                // 2) loop through all TOC items and put into databse
 
                 $($xml).find('dataItem').each(function () {
-                    alert('data item found');
+
+                    var id = $(this).find('id').text();
+                    var title = $(this).find('title').text();
+                    var dscr = $(this).find('dscr').text();
+
+                    alert('data item found: ' + id + ', ' + title + ', ' + dscr);
                     //alert($(this).find("Page[Name]>controls>name").text());
                 });
+
+                // 3) update timestamp
+
                 alert('done');
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
