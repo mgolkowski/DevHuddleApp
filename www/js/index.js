@@ -168,6 +168,7 @@ var app = {
                             rowCnt -= 1;
                             if (rowCnt == 0) {
                                 alert("ALL DONE!!!");
+                                app.loadTOC();
                             }
                         }, function (e) {
                             rowCnt -= 1;
@@ -182,6 +183,23 @@ var app = {
                     alert("ERROR: " + e.message);
                 });
 
+            });
+        });
+    },
+
+    // load TOC from database and display
+    loadTOC: function () {
+        alert('in loadTOC');
+
+        db.transaction(function (tx) {
+            tx.executeSql("SELECT * FROM TOC ORDER BY id;", [], function (tx, res) {
+
+                var numRows = res.rows.length;
+                alert('rows read: ' + numRows);
+
+                for (var i = 0; i < numrows; i++) {
+                    alert('reading: ' + res.rows(i).id + ' - ' + res.rows(i).name);
+                }
             });
         });
     },
