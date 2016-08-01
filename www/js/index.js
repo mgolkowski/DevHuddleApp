@@ -17,9 +17,11 @@
  * under the License.
  */
 var db;
+
 var baseURL = 'https://raw.githubusercontent.com/mgolkowski/DevHuddleApp/master/www/';
 var lastUpdateXML = 'LastTOCUpdate.xml';
 var tocXML = 'TOC.xml';
+
 
 var app = {
 
@@ -100,7 +102,7 @@ var app = {
     doServerTOCUpdate: function (lastTimestamp) {
 
         $.ajax({
-            url: baseURL + lastUpdateXML,
+            url: baseURL + 'LastTOCUpdate.xml',
             type: 'GET',
             success: function (data) {
 
@@ -130,7 +132,7 @@ var app = {
     refreshTOC: function (newTimestamp) {
 
         $.ajax({
-            url: baseURL + tocXML,
+            url: baseURL + 'TOC.xml',
             type: 'GET',
             success: function (data) {
 
@@ -222,7 +224,6 @@ var app = {
             });
         });
 
-       
 
         // check if article is loaded into db
 
@@ -242,7 +243,7 @@ var app = {
                 var numRows = res.rows.length;
                 var html = '';
                 for (var i = 0; i < numRows; i++) {
-                    html += '<div><a href="#" onclick="app.loadArticle(' + res.rows.item(i).id + '); return false">' + res.rows.item(i).title + '</a><p>' + res.rows.item(i).dscr + '</p></div>';
+                    html += '<div><a href="/view.html?id=' + res.rows.item(i) + '">' + res.rows.item(i).title + '</a><p>' + res.rows.item(i).dscr + '</p></div>';
                 }
                 $('#divTOC').html(html).show();
                 $('#deviceready').hide();
