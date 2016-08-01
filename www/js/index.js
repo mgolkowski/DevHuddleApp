@@ -67,7 +67,13 @@ var app = {
 
             if (numRows == 0) { // first time - set last update to 1900 to force initial refresh
                 alert('about to insert row');
-                tx.executeSql("INSERT INTO LastTOCUpdate (lastUpdate) VALUES (?)", ["1900-01-01"]);
+                tx.executeSql("INSERT INTO LastTOCUpdate (lastUpdate) VALUES (?)", ["1900-01-01"], function (tx, res) {
+                    alert("rowsAffected: " + res.rowsAffected + " -- should be 1");
+
+                }, function (e) {
+                    alert("ERROR: " + e.message);
+                });
+
             } else {
                 alert('already has a row!');
             }
