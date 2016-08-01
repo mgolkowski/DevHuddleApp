@@ -38,6 +38,8 @@ var app = {
 
     onDeviceReady: function () {
 
+        alert('STARTING ...');
+
         app.receivedEvent('deviceready');
         dbObj = window.sqlitePlugin.openDatabase({ name: "my.db" });
 
