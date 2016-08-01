@@ -105,9 +105,6 @@ var app = {
         alert('about to retrieve from: ' + baseURL + 'LastTOCUpdate.xml');
         $.ajax({
             url: baseURL + 'LastTOCUpdate.xml',
-            dataType: "xml",
-            contentType: 'application/xml',
-            timeout: 10000,
             type: 'GET',
             success: function (data) {
 
