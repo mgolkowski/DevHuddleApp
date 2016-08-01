@@ -80,7 +80,7 @@ var app = {
 
                         db.transaction(function (tx) {
                             alert('reading ...');
-                            tx.executeSql("select top 1 lastUpdateText as lastUpdate from LastTOCUpdate;", [], function (tx, res) {
+                            tx.executeSql("SELECT LIMIT 1 lastUpdateText as lastUpdate from LastTOCUpdate;", [], function (tx, res) {
                                 alert('done reading.');
 
                                 var retval = res.rows.item(0).lastUpdate;
@@ -97,7 +97,10 @@ var app = {
     },
 
     // checks TOC timestamp on server, and if > lastTimestamp then refresh TOC in database
+    // then renders splash screen
+
     doServerTOCUpdate: function (lastTimestamp) {
+        alert('about to retrieve from: ' + baseURL + 'LastTOCUpdate.xml');
         $.ajax({
             url: baseURL + 'LastTOCUpdate.xml',
             dataType: "xml",
