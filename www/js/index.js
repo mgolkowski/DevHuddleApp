@@ -148,13 +148,11 @@ var app = {
                 $toc = $xml.find("TOC");
                 alert('TOC: ' + $lastUpdate);
 
-                $($toc).each(function () {
-                    alert('in each');
+                $($xml).find('dataItem').each(function () {
+                    alert('data item found');
                     //alert($(this).find("Page[Name]>controls>name").text());
                 });
-
-                $dataItem = $toc.find('dataItem');
-                alert('$dataItem count: ' + $dataItem.length);
+                alert('done');
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Error status :" + textStatus);
