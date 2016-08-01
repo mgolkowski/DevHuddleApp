@@ -70,7 +70,7 @@ var app = {
                             app.getServerTOCUpdate("1900-01-01");
 
                         }, function (e) {
-                            alert("ERROR in Insert: " + e.message);
+                            alert("ERROR: " + e.message);
                         });
 
                     } else { // already has a row - read it
@@ -82,7 +82,7 @@ var app = {
                                 app.doServerTOCUpdate(retval);
 
                             }, function (e) {
-                                alert("ERROR in Select: " + e.message);
+                                alert("ERROR: " + e.message);
                             });
                         });
                     }
@@ -209,12 +209,6 @@ var app = {
 
                     alert('reading article.');
                     alert('rows: ' + res.rows.item.length);
-
-                    if (res.rows.item.length == 0) { // article not loaded in db yet - load and display
-
-                    } else { // article exists - compare last update timestamp with TOC 
-
-                    }
 
                 }, function (e) {
                     alert("ERROR: " + e.message);
