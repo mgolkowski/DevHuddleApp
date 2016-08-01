@@ -198,7 +198,7 @@ var app = {
                 alert('rows read: ' + numRows);
 
                 for (var i = 0; i < numrows; i++) {
-                    alert('reading: ' + res.rows.item(i).id + ' - ' + res.rows.item(i).name);
+                    alert('reading: ' + res.rows.item(i).id + ' - ' + res.rows.item(i).title);
                 }
             });
         });
