@@ -1,4 +1,4 @@
-    /*
+ /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -38,9 +38,7 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
 
     onDeviceReady: function () {
-
-        alert('STARTING v2. ...');
-        
+       
         app.receivedEvent('deviceready');
         db = window.sqlitePlugin.openDatabase({ name: "my.db" });
 
@@ -62,10 +60,8 @@ var app = {
                 tx.executeSql("SELECT COUNT(*) AS cnt from LastTOCUpdate;", [], function (tx, res) {
                     var numRows = res.rows.item(0).cnt;
 
-                    alert('num rows: ' + numRows);
-
                     if (numRows == 0) { // no row =first time - set last update to 1900 to force initial refresh
-                        alert('COUNT = 0 - about to insert');
+
                         tx.executeSql("INSERT INTO LastTOCUpdate (lastUpdate) VALUES (?)", ["1900-01-01"], function (tx, res) {
                             
 
@@ -76,16 +72,11 @@ var app = {
                         });
 
                     } else { // already has a row - read it
-                        alert('already has a row - read it ...');
 
                         db.transaction(function (tx) {
-                            alert('reading ...');
                             tx.executeSql("SELECT lastUpdate from LastTOCUpdate;", [], function (tx, res) {
-                                alert('done reading.');
 
                                 var retval = res.rows.item(0).lastUpdate;
-                                alert('result: ' + retval);
-
                                 app.doServerTOCUpdate(retval);
 
                             }, function (e) {
@@ -102,14 +93,12 @@ var app = {
     // then renders splash screen
 
     doServerTOCUpdate: function (lastTimestamp) {
-        alert('about to retrieve from: ' + baseURL + 'LastTOCUpdate.xml');
 
         $.ajax({
             url: baseURL + 'LastTOCUpdate.xml',
             type: 'GET',
             success: function (data) {
 
-                alert(data);
                 var xmlDoc = $.parseXML(data),
                 $xml = $(xmlDoc),
                 $lastUpdate = $xml.find("lastUpdate");
@@ -118,11 +107,10 @@ var app = {
                 var dLastTimestamp = new Date(lastTimestamp);
 
                 if (dLastUpdateServer > dLastTimestamp) {   // server is newer - refresh
-                    alert('server is newer - refresh');
                     app.refreshTOC($lastUpdate.text());
 
                 } else {
-                    alert('up to date - display it');
+                    // UP TO DATE - just display TOC
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -135,7 +123,6 @@ var app = {
 
     // reload the table of contents from the server then display
     refreshTOC: function (newTimestamp) {
-        alert(' in refreshTOC');
 
         $.ajax({
             url: baseURL + 'TOC.xml',
@@ -178,14 +165,15 @@ var app = {
 
                         tx.executeSql("INSERT INTO TOC (id, title, dscr) VALUES (?,?,?)", [id, title, dscr], function (tx, res) {
                             alert('row inserted');
+                            rowCnt -= 1;
+                            if (rowCnt == 0) {
+                                alert("ALL DONE!!!");
+                            }
                         }, function (e) {
+                            rowCnt -= 1;
                             alert("ERROR: " + e.message);
                         });
-
-                        rowCnt -= 1;
-                        if (rowCnt == 0) {
-                            alert("ALL DONE!!!");
-                        }
+                        
                     });
 
                     // 3) update timestamp
