@@ -1,4 +1,4 @@
-/*
+    /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+var dbobj;
+
 var app = {
+
     // Application Constructor
     initialize: function() {
         this.bindEvents();
@@ -32,9 +35,28 @@ var app = {
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
+
+    onDeviceReady: function () {
+
         app.receivedEvent('deviceready');
+        if (device.platform == "Android") {
+            dbobj = window.sqlitePlugin.openDatabase({ name: "WorldVisionArticles" });
+        }
+        else {
+            dbobj = window.openDatabase("databasename", "1", "WorldVisionArticles", '');
+        }
+        dbobj.transaction(createSchema, errorInSchema, successInSchema);
     },
+    createSchema: function(tx) {
+        tx.executeSql('CREATE TABLE IF NOT EXISTS tablename(nID INTEGER PRIMARY KEY AUTOINCREMENT,sName TEXT)');
+    }, 
+    errorInSchema: function() {
+        alert("Error to create schema");
+    }, 
+    successInSchema: function() {
+        alert("Schema creation successful");
+    },
+
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
