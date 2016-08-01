@@ -190,6 +190,8 @@ var app = {
     // load TOC from database and display
     loadTOC: function () {
 
+        $('#divTOC').html('');
+
         db.transaction(function (tx) {
             tx.executeSql("SELECT * FROM TOC ORDER BY id;", [], function (tx, res) {
 
@@ -198,6 +200,7 @@ var app = {
 
                 for (var i = 0; i < numRows; i++) {
                     alert('reading: ' + res.rows.item(i).title);
+                    $('#divTOC').html('<div><a href="/view.html?id=' + res.rows.item(i) + '">' + res.rows.item(i).title + '</a><p>' + res.rows.item(i).dscr + '</p></div>');
                 }
             });
         });
