@@ -17,6 +17,7 @@
  * under the License.
  */
 var db;
+var baseURL = 'https://raw.githubusercontent.com/mgolkowski/WorldVisionApp/master/www/';
 
 var app = {
 
@@ -82,6 +83,9 @@ var app = {
                 tx.executeSql("select top 1 lastUpdateText as lastUpdate from LastTOCUpdate;", [], function (tx, res) {
                     var retval = res.rows.item(0).lastUpdate;
                     alert('result: ' + retval);
+
+                    app.getServerTOCUpdate();
+
                     return retval;
                 });
             });
@@ -90,7 +94,7 @@ var app = {
 
     getServerTOCUpdate: function () {
         $.ajax({
-            url: 'http://twitter.com/statuses/public_timeline.xml',
+            url: baseURL + 'LastTOCUpdate.xml',
             dataType: "xml",
             contentType: 'application/xml',
             timeout: 10000,
