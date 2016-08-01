@@ -198,51 +198,8 @@ var app = {
                 alert('rows read: ' + numRows);
 
                 for (var i = 0; i < numrows; i++) {
-                    alert('reading: ' + res.rows(i).id + ' - ' + res.rows(i).name);
+                    alert('reading: ' + res.rows.item(i).id + ' - ' + res.rows.item(i).name);
                 }
-            });
-        });
-    },
-
-    setupDatabase: function () {
-        alert('in setupdb: ' + db);
-        db.transaction(function (tx) {
-
-            alert('in db.transaction');
-
-            //tx.executeSql('DROP TABLE IF EXISTS test_table');
-            tx.executeSql('CREATE TABLE IF NOT EXISTS test_table (id integer primary key, data text, data_num integer)');
-
-            tx.executeSql("INSERT INTO test_table (data, data_num) VALUES (?,?)", ["test", 100], function (tx, res) {
-                db.transaction(function (tx) {
-
-                    tx.executeSql("INSERT INTO test_table (data, data_num) VALUES (?,?)", ["test", 100], function (tx, res) {
-                        alert("insertId: " + res.insertId + " -- probably 1");
-                        alert("rowsAffected: " + res.rowsAffected + " -- should be 1");
-
-                        db.transaction(function (tx) {
-                            tx.executeSql("select count(id) as cnt from test_table;", [], function (tx, res) {
-                                alert("res.rows.length: " + res.rows.length + " -- should be 1");
-                                alert("res.rows.item(0).cnt: " + res.rows.item(0).cnt + " -- should be 1");
-                            });
-                        });
-
-                    }, function (e) {
-                        alert("ERROR: " + e.message);
-                    });
-                }); ("insertId: " + res.insertId + " -- probably 1");
-
-                alert("rowsAffected: " + res.rowsAffected + " -- should be 1");
-
-                db.transaction(function (tx) {
-                    tx.executeSql("select count(id) as cnt from test_table;", [], function (tx, res) {
-                        alert("res.rows.length: " + res.rows.length + " -- should be 1");
-                        alert("res.rows.item(0).cnt: " + res.rows.item(0).cnt + " -- should be 1");
-                    });
-                });
-
-            }, function (e) {
-                alert("ERROR: " + e.message);
             });
         });
     },
