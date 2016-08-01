@@ -52,23 +52,12 @@ var app = {
         db.transaction(function (tx) {
 
             alert('in db.transaction');
+
             //tx.executeSql('DROP TABLE IF EXISTS test_table');
             tx.executeSql('CREATE TABLE IF NOT EXISTS test_table (id integer primary key, data text, data_num integer)');
 
-            // demonstrate PRAGMA:
-            db.executeSql("pragma table_info (test_table);", [], function (res) {
-                alert("PRAGMA res: " + JSON.stringify(res));
-            });
-
             tx.executeSql("INSERT INTO test_table (data, data_num) VALUES (?,?)", ["test", 100], function (tx, res) {
                 db.transaction(function (tx) {
-                    tx.executeSql('DROP TABLE IF EXISTS test_table');
-                    tx.executeSql('CREATE TABLE IF NOT EXISTS test_table (id integer primary key, data text, data_num integer)');
-
-                    // demonstrate PRAGMA:
-                    db.executeSql("pragma table_info (test_table);", [], function (res) {
-                        alert("PRAGMA res: " + JSON.stringify(res));
-                    });
 
                     tx.executeSql("INSERT INTO test_table (data, data_num) VALUES (?,?)", ["test", 100], function (tx, res) {
                         alert("insertId: " + res.insertId + " -- probably 1");
@@ -85,6 +74,7 @@ var app = {
                         alert("ERROR: " + e.message);
                     });
                 }); ("insertId: " + res.insertId + " -- probably 1");
+
                 alert("rowsAffected: " + res.rowsAffected + " -- should be 1");
 
                 db.transaction(function (tx) {
