@@ -50,6 +50,8 @@ var app = {
     // Then, compare this timestamp against server, if if server is newer then refresh TOC 
     updateTOC: function () {
 
+        $('#pMessage').html('Reading from World Vision server');
+
         db.transaction(function (tx) {
 
             // Create DB table (if not already created) to store last TOC update
@@ -187,21 +189,20 @@ var app = {
         });
     },
 
-    // load TOC from database and display
+    // load TOC from database and display it on screen
     loadTOC: function () {
 
-        $('#divTOC').html('');
-
+        
         db.transaction(function (tx) {
             tx.executeSql("SELECT * FROM TOC ORDER BY id;", [], function (tx, res) {
 
                 var numRows = res.rows.length;
-                alert('rows read: ' + numRows);
-
+                var html = '';
                 for (var i = 0; i < numRows; i++) {
-                    alert('reading: ' + res.rows.item(i).title);
-                    $('#divTOC').html('<div><a href="/view.html?id=' + res.rows.item(i) + '">' + res.rows.item(i).title + '</a><p>' + res.rows.item(i).dscr + '</p></div>');
+                    html += '<div><a href="/view.html?id=' + res.rows.item(i) + '">' + res.rows.item(i).title + '</a><p>' + res.rows.item(i).dscr + '</p></div>';
                 }
+                $('#divTOC').html(html).show();
+                $('#divSplash').hide();
             });
         });
     },
