@@ -56,37 +56,36 @@ var app = {
 
 
             tx.executeSql('CREATE TABLE IF NOT EXISTS LastTOCUpdate (lastUpdate text)');
-
-            var numRows = 0;
             db.transaction(function (tx) {
-                tx.executeSql("select count(lastUpdate) as cnt from LastTOCUpdate;", [], function (tx, res) {
-                    numRows = res.rows.item(0).cnt;
-                });
-            });
 
-            alert('num rows: ' + numRows);
+                tx.executeSql("SELECT COUNT(*) AS cnt from LastTOCUpdate;", [], function (tx, res) {
+                    var numRows = res.rows.item(0).cnt;
 
-            if (numRows == 0) { // first time - set last update to 1900 to force initial refresh
-                alert('about to insert row');
-                tx.executeSql("INSERT INTO LastTOCUpdate (lastUpdate) VALUES (?)", ["1900-01-01"], function (tx, res) {
-                    alert("rowsAffected: " + res.rowsAffected + " -- should be 1");
+                    alert('num rows: ' + numRows);
 
-                }, function (e) {
-                    alert("ERROR: " + e.message);
-                });
+                    if (numRows == 0) { // first time - set last update to 1900 to force initial refresh
+                        alert('COUNT = 0 - about to insert');
+                        tx.executeSql("INSERT INTO LastTOCUpdate (lastUpdate) VALUES (?)", ["1900-01-01"], function (tx, res) {
+                            alert("rowsAffected: " + res.rowsAffected + " -- should be 1");
 
-            } else {
-                alert('already has a row!');
-            }
+                        }, function (e) {
+                            alert("ERROR: " + e.message);
+                        });
 
-            db.transaction(function (tx) {
-                tx.executeSql("select top 1 lastUpdateText as lastUpdate from LastTOCUpdate;", [], function (tx, res) {
-                    var retval = res.rows.item(0).lastUpdate;
-                    alert('result: ' + retval);
+                    } else {
+                        alert('already has a row!');
+                    }
 
-                    app.getServerTOCUpdate();
+                    db.transaction(function (tx) {
+                        tx.executeSql("select top 1 lastUpdateText as lastUpdate from LastTOCUpdate;", [], function (tx, res) {
+                            var retval = res.rows.item(0).lastUpdate;
+                            alert('result: ' + retval);
 
-                    return retval;
+                            app.getServerTOCUpdate();
+
+                            return retval;
+                        });
+                    });
                 });
             });
         });
