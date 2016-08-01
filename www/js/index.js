@@ -40,10 +40,11 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
 
     onDeviceReady: function () {
-       
+        alert('a');       
         app.receivedEvent('deviceready');
+        alert('b');
         db = window.sqlitePlugin.openDatabase({ name: "my.db" });
-
+        alert('c');
         app.updateTOC();
     },
 
