@@ -43,7 +43,7 @@ var app = {
         app.receivedEvent('deviceready');
         db = window.sqlitePlugin.openDatabase({ name: "my.db" });
 
-        alert(' getLastContentsUpdate(): ' + getLastContentsUpdate());
+        alert(' getLastContentsUpdate(): ' + app.getLastContentsUpdate());
         //app.setupDatabase();
     },
 
