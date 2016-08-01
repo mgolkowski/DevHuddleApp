@@ -39,22 +39,59 @@ var app = {
     onDeviceReady: function () {
 
         app.receivedEvent('deviceready');
-        if (device.platform == "Android") {
-            dbobj = window.sqlitePlugin.openDatabase({ name: "WorldVisionArticles" });
-        }
-        else {
-            dbobj = window.openDatabase("databasename", "1", "WorldVisionArticles", '');
-        }
-        dbobj.transaction(createSchema, errorInSchema, successInSchema);
+        dbObj = window.sqlitePlugin.openDatabase({ name: "my.db" });
+
+        setupDatabase();
     },
-    createSchema: function(tx) {
-        tx.executeSql('CREATE TABLE IF NOT EXISTS tablename(nID INTEGER PRIMARY KEY AUTOINCREMENT,sName TEXT)');
-    }, 
-    errorInSchema: function() {
-        alert("Error to create schema");
-    }, 
-    successInSchema: function() {
-        alert("Schema creation successful");
+
+    setupDatabase: function() {
+        db.transaction(function (tx) {
+            tx.executeSql('DROP TABLE IF EXISTS test_table');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS test_table (id integer primary key, data text, data_num integer)');
+
+            // demonstrate PRAGMA:
+            db.executeSql("pragma table_info (test_table);", [], function (res) {
+                alert("PRAGMA res: " + JSON.stringify(res));
+            });
+
+            tx.executeSql("INSERT INTO test_table (data, data_num) VALUES (?,?)", ["test", 100], function (tx, res) {
+                db.transaction(function (tx) {
+                    tx.executeSql('DROP TABLE IF EXISTS test_table');
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS test_table (id integer primary key, data text, data_num integer)');
+
+                    // demonstrate PRAGMA:
+                    db.executeSql("pragma table_info (test_table);", [], function (res) {
+                        alert("PRAGMA res: " + JSON.stringify(res));
+                    });
+
+                    tx.executeSql("INSERT INTO test_table (data, data_num) VALUES (?,?)", ["test", 100], function (tx, res) {
+                        alert("insertId: " + res.insertId + " -- probably 1");
+                        alert("rowsAffected: " + res.rowsAffected + " -- should be 1");
+
+                        db.transaction(function (tx) {
+                            tx.executeSql("select count(id) as cnt from test_table;", [], function (tx, res) {
+                                alert("res.rows.length: " + res.rows.length + " -- should be 1");
+                                alert("res.rows.item(0).cnt: " + res.rows.item(0).cnt + " -- should be 1");
+                            });
+                        });
+
+                    }, function (e) {
+                        alert("ERROR: " + e.message);
+                    });
+                }); ("insertId: " + res.insertId + " -- probably 1");
+                alert("rowsAffected: " + res.rowsAffected + " -- should be 1");
+
+                db.transaction(function (tx) {
+                    tx.executeSql("select count(id) as cnt from test_table;", [], function (tx, res) {
+                        alert("res.rows.length: " + res.rows.length + " -- should be 1");
+                        alert("res.rows.item(0).cnt: " + res.rows.item(0).cnt + " -- should be 1");
+                    });
+                });
+
+            }, function (e) {
+                alert("ERROR: " + e.message);
+            });
+        });
     },
 
     // Update DOM on a Received Event
