@@ -108,7 +108,7 @@ var app = {
             dataType: "xml",
             contentType: 'application/xml',
             timeout: 10000,
-            type: 'POST',
+            type: 'GET',
             success: function (data) {
 
                 alert(data);
