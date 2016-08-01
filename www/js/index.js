@@ -150,36 +150,42 @@ var app = {
         db.transaction(function (tx) {
 
             // Create DB table (if not already created) to store last TOC update
-            alert('in create');
             tx.executeSql('CREATE TABLE IF NOT EXISTS TOC (id integer, title text, dscr text, lastUpdate text)');
-            alert('in delete');
-            tx.executeSql('DELETE FROM TOC');
-            alert('after delete')
             db.transaction(function (tx) {
 
-            // 2) loop through all TOC items and put into databse
-            var rowCnt = $(data).find('dataItem').length;
-            alert('rowCnt: ' + rowCnt);
+                // 1) delete all TOC in database
+                tx.executeSql("DELETE FROM TOC", [], function (tx, res) {
 
-            $(data).find('dataItem').each(function () {
+                    // 2) loop through all TOC items and put into databse
+                    var rowCnt = $(data).find('dataItem').length;
 
-                var id = $(this).find('id').text();
-                var title = $(this).find('title').text();
-                var dscr = $(this).find('dscr').text();
-                var lastUpdate = $(this).find('lastUpdate').text();
+                    $(data).find('dataItem').each(function () {
 
-                tx.executeSql("INSERT INTO TOC (id, title, dscr, lastUpdate) VALUES (?,?,?,?)", [id, title, dscr, lastUpdate], function (tx, res) {
-                    alert('row inserted');
-                    rowCnt -= 1;
-                    if (rowCnt == 0) {
-                        alert("ALL DONE!!!");
-                        app.loadTOC();
-                    }
-                }, function (e) {
-                    rowCnt -= 1;
-                    alert("ERROR in refreshTOCDB 1: " + e.message);
-                });
+                        var id = $(this).find('id').text();
+                        var title = $(this).find('title').text();
+                        var dscr = $(this).find('dscr').text();
+                        var lastUpdate = $(this).find('lastUpdate').text();
+
+                        tx.executeSql("INSERT INTO TOC (id, title, dscr, lastUpdate) VALUES (?,?,?,?)", [id, title, dscr, lastUpdate], function (tx, res) {
+                            alert('row inserted');
+                            rowCnt -= 1;
+                            if (rowCnt == 0) {
+                                alert("ALL DONE!!!");
+                                app.loadTOC();
+                            }
+                        }, function (e) {
+                            rowCnt -= 1;
+                            alert("ERROR in refreshTOCDB 1: " + e.message);
+                        });
                         
+                    });
+
+                    // 3) update timestamp
+
+                }, function (e) {
+                    alert("ERROR in refreshTOCDB 2: " + e.message);
+                });
+
             });
         });
     },
