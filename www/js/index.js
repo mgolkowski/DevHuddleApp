@@ -39,14 +39,16 @@ var app = {
     onDeviceReady: function () {
 
         alert('STARTING ...');
-
+        
         app.receivedEvent('deviceready');
         dbObj = window.sqlitePlugin.openDatabase({ name: "my.db" });
 
+        alert('about to call db');
         setupDatabase();
     },
 
-    setupDatabase: function() {
+    setupDatabase: function () {
+        alert('in setupdb');
         db.transaction(function (tx) {
             tx.executeSql('DROP TABLE IF EXISTS test_table');
             tx.executeSql('CREATE TABLE IF NOT EXISTS test_table (id integer primary key, data text, data_num integer)');
