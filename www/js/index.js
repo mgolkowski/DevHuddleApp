@@ -103,26 +103,31 @@ var app = {
 
     doServerTOCUpdate: function (lastTimestamp) {
         alert('about to retrieve from: ' + baseURL + 'LastTOCUpdate.xml');
-        $.ajax({
-            url: baseURL + 'LastTOCUpdate.xml',
-            type: 'GET',
-            success: function (data) {
+        try {
+            $.ajax({
+                url: baseURL + 'LastTOCUpdate.xml',
+                type: 'GET',
+                success: function (data) {
 
-                alert(data);
-                var xmlDoc = $.parseXML(data),
-                $xml = $(xmlDoc),
-                $lastUpdate = $xml.find("lastUpdate");
+                    alert(data);
+                    var xmlDoc = $.parseXML(data),
+                    $xml = $(xmlDoc),
+                    $lastUpdate = $xml.find("lastUpdate");
 
-                alert('LAST UPDATE FROM SERVER: ' + $lastUpdate.text());
+                    alert('LAST UPDATE FROM SERVER: ' + $lastUpdate.text());
 
 
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("Error status :" + textStatus);
-                alert("Error type :" + errorThrown);
-                alert("Error message :" + XMLHttpRequest.responseXML);
-            }
-        });
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Error status :" + textStatus);
+                    alert("Error type :" + errorThrown);
+                    alert("Error message :" + XMLHttpRequest.responseXML);
+                }
+            });
+        } catch (e) {
+            alert("ERROR: " + e.message);
+        }
+        
     },
 
     setupDatabase: function () {
