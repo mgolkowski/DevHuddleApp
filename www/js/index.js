@@ -119,7 +119,7 @@ var app = {
 
                 if (dLastUpdateServer > dLastTimestamp) {   // server is newer - refresh
                     alert('server is newer - refresh');
-                    app.refreshTOC();
+                    app.refreshTOC($lastUpdate.text());
 
                 } else {
                     alert('up to date - display it');
@@ -134,7 +134,7 @@ var app = {
     },
 
     // reload the table of contents from the server then display
-    refreshTOC: function () {
+    refreshTOC: function (newTimestamp) {
         alert(' in refreshTOC');
 
         $.ajax({
@@ -144,9 +144,10 @@ var app = {
 
                 alert(data);
                 var xmlDoc = $.parseXML(data),
-                $xml = $(xmlDoc),
-                $toc = $xml.find("TOC");
-                alert('TOC: ' + $lastUpdate);
+                $xml = $(xmlDoc);
+                //$toc = $xml.find("TOC");
+
+                // loop through all TOC items and put into databse
 
                 $($xml).find('dataItem').each(function () {
                     alert('data item found');
