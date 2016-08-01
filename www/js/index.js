@@ -150,7 +150,7 @@ var app = {
         db.transaction(function (tx) {
 
             // Create DB table (if not already created) to store last TOC update
-            tx.executeSql('CREATE TABLE IF NOT EXISTS TOC (id integer, title text, dscr text, lastUpdate text)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS TOC (id integer, title text, dscr text)');
             db.transaction(function (tx) {
 
                 // 1) delete all TOC in database
@@ -164,9 +164,8 @@ var app = {
                         var id = $(this).find('id').text();
                         var title = $(this).find('title').text();
                         var dscr = $(this).find('dscr').text();
-                        var lastUpdate = $(this).find('lastUpdate').text();
 
-                        tx.executeSql("INSERT INTO TOC (id, title, dscr, lastUpdate) VALUES (?,?,?,?)", [id, title, dscr, lastUpdate], function (tx, res) {
+                        tx.executeSql("INSERT INTO TOC (id, title, dscr) VALUES (?,?,?)", [id, title, dscr], function (tx, res) {
                             alert('row inserted');
                             rowCnt -= 1;
                             if (rowCnt == 0) {
@@ -190,41 +189,10 @@ var app = {
         });
     },
 
-    // displays an article
-    // first, checks update timestamp of article - if >= server then display from DB
-    // otherwise, load from server, update DB, and display
     loadArticle: function (id) {
-
-        alert('in loadArticle: ' + id);
-
-        // first, try to load article from database (and create table if necessary)
-        db.transaction(function (tx) {
-
-            // Create DB table (if not already created)
-            tx.executeSql('CREATE TABLE IF NOT EXISTS Article (id integer, html text, lastUpdate text)');
-            db.transaction(function (tx) {
-
-                // Try to retrieve article from DB
-                tx.executeSql("SELECT * from Article WHERE id = ?;", [id], function (tx, res) {
-
-                    alert('reading article.');
-                    alert('rows: ' + res.rows.item.length);
-
-                }, function (e) {
-                    alert("ERROR: " + e.message);
-                });
-
-            });
-        });
-
-       
-
-        // check if article is loaded into db
-
-
         $('#divTOC').hide();
         $('#divArticle').show().html('<h1>todo</h1>');
-        
+        alert('in loadArticle: ' + id);
     },
 
     // load TOC from database and display it on screen
