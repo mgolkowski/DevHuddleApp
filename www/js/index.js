@@ -168,6 +168,8 @@ var app = {
                 tx.executeSql("DELETE FROM TOC", [], function (tx, res) {
 
                     // 2) loop through all TOC items and put into databse
+                    var rowCnt = $(data).find('dataItem').length;
+
                     $(data).find('dataItem').each(function () {
 
                         var id = $(this).find('id').text();
@@ -179,6 +181,11 @@ var app = {
                         }, function (e) {
                             alert("ERROR: " + e.message);
                         });
+
+                        rowCnt -= 1;
+                        if (rowCnt == 0) {
+                            alert("ALL DONE!!!");
+                        }
                     });
 
                     // 3) update timestamp
@@ -189,7 +196,6 @@ var app = {
 
             });
         });
-        alert('done');
     },
 
     setupDatabase: function () {
