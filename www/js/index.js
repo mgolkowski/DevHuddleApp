@@ -114,9 +114,14 @@ var app = {
                     $xml = $(xmlDoc),
                     $lastUpdate = $xml.find("lastUpdate");
 
-                    alert('LAST UPDATE FROM SERVER: ' + $lastUpdate.text());
+                    var dLastUpdateServer = new Date($lastUpdate.text());
+                    var dLastTimestamp = new Date(lastTimestamp);
 
-
+                    if (dLastUpdateServer > dLastTimestamp) {   // server is newer - refresh
+                        alert('server is newer - refresh');
+                    } else {
+                        alert('up to date');
+                    }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("Error status :" + textStatus);
