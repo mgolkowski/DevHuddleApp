@@ -196,8 +196,7 @@ var app = {
                 var numRows = res.rows.length;
                 alert('rows read: ' + numRows);
 
-                for (var i = 0; i < numrows; i++) {
-                    alert('in here');
+                for (var i = 0; i < numRows; i++) {
                     alert('reading: ' + res.rows.item(i).title);
                 }
             });
