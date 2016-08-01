@@ -148,7 +148,7 @@ var app = {
                 $toc = $xml.find("TOC");
                 alert('TOC: ' + $lastUpdate);
                 $dataItem = $toc.find('dataItem');
-                alert('$dataItem: ' + $dataItem);
+                alert('$dataItem count: ' + $dataItem.length);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Error status :" + textStatus);
