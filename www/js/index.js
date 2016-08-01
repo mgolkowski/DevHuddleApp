@@ -48,8 +48,10 @@ var app = {
     },
 
     setupDatabase: function () {
-        alert('in setupdb');
+        alert('in setupdb: ' + db);
         db.transaction(function (tx) {
+
+            alert('in db.transaction');
             tx.executeSql('DROP TABLE IF EXISTS test_table');
             tx.executeSql('CREATE TABLE IF NOT EXISTS test_table (id integer primary key, data text, data_num integer)');
 
