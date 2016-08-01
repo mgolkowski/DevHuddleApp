@@ -80,7 +80,7 @@ var app = {
 
                         db.transaction(function (tx) {
                             alert('reading ...');
-                            tx.executeSql("SELECT MAX(lastUpdateText) as lastUpdate from LastTOCUpdate;", [], function (tx, res) {
+                            tx.executeSql("SELECT LIMIT 1 lastUpdate as lastUpdate from LastTOCUpdate;", [], function (tx, res) {
                                 alert('done reading.');
 
                                 var retval = res.rows.item(0).lastUpdate;
