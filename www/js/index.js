@@ -18,6 +18,8 @@
  */
 var db;
 var baseURL = 'https://raw.githubusercontent.com/mgolkowski/WorldVisionApp/master/www/';
+var lastUpdateXML = 'LastTOCUpdate.xml';
+var tocXML = 'TOC.xml';
 
 var app = {
 
@@ -95,7 +97,7 @@ var app = {
     doServerTOCUpdate: function (lastTimestamp) {
 
         $.ajax({
-            url: baseURL + 'LastTOCUpdate.xml',
+            url: baseURL + lastUpdateXML,
             type: 'GET',
             success: function (data) {
 
@@ -125,7 +127,7 @@ var app = {
     refreshTOC: function (newTimestamp) {
 
         $.ajax({
-            url: baseURL + 'TOC.xml',
+            url: baseURL + tocXML,
             type: 'GET',
             success: function (data) {
 
@@ -187,6 +189,12 @@ var app = {
         });
     },
 
+    loadArticle: function (id) {
+        $('#divTOC').hide();
+        $('#divArticle').show().html('<h1>todo</h1>');
+        alert('in loadArticle: ' + id);
+    },
+
     // load TOC from database and display it on screen
     loadTOC: function () {
 
@@ -197,7 +205,7 @@ var app = {
                 var numRows = res.rows.length;
                 var html = '';
                 for (var i = 0; i < numRows; i++) {
-                    html += '<div><a href="/view.html?id=' + res.rows.item(i) + '">' + res.rows.item(i).title + '</a><p>' + res.rows.item(i).dscr + '</p></div>';
+                    html += '<div><a href="#" onclick="app.loadArticle(' + res.rows.item(i).id + '); return false">' + res.rows.item(i).title + '</a><p>' + res.rows.item(i).dscr + '</p></div>';
                 }
                 $('#divTOC').html(html).show();
                 $('#deviceready').hide();
