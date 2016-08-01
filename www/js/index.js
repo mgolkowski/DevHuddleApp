@@ -51,19 +51,17 @@ var app = {
     // If never updated (first time) then set it to 1900-01-01 to force initial refresh
     // Then, compare this timestamp against server, if if server is newer then refresh TOC 
     updateTOC: function () {
-        alert('1');
+
         db.transaction(function (tx) {
-            alert('1');
 
             // Create DB table (if not already created) to store last TOC update
             tx.executeSql('CREATE TABLE IF NOT EXISTS LastTOCUpdate (lastUpdate text)');
             db.transaction(function (tx) {
-                alert('2');
 
                 // DB exists or has been created.  Check for a row to hold data
                 tx.executeSql("SELECT COUNT(*) AS cnt from LastTOCUpdate;", [], function (tx, res) {
                     var numRows = res.rows.item(0).cnt;
-                    alert('3');
+
                     if (numRows == 0) { // no row =first time - set last update to 1900 to force initial refresh
 
                         tx.executeSql("INSERT INTO LastTOCUpdate (lastUpdate) VALUES (?)", ["1900-01-01"], function (tx, res) {
