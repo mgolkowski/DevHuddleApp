@@ -44,7 +44,7 @@ var app = {
         dbObj = window.sqlitePlugin.openDatabase({ name: "my.db" });
 
         alert('about to call db');
-        setupDatabase();
+        app.setupDatabase();
     },
 
     setupDatabase: function () {
