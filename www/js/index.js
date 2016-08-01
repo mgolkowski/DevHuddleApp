@@ -175,7 +175,7 @@ var app = {
                             }
                         }, function (e) {
                             rowCnt -= 1;
-                            alert("ERROR in refreshTOCDB 1: " + e.message);
+                            alert("ERROR: " + e.message);
                         });
                         
                     });
@@ -183,7 +183,7 @@ var app = {
                     // 3) update timestamp
 
                 }, function (e) {
-                    alert("ERROR in refreshTOCDB 2: " + e.message);
+                    alert("ERROR: " + e.message);
                 });
 
             });
@@ -217,7 +217,7 @@ var app = {
                     }
 
                 }, function (e) {
-                    alert("ERROR in loadArticle: " + e.message);
+                    alert("ERROR: " + e.message);
                 });
 
             });
