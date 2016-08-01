@@ -73,19 +73,19 @@ var app = {
                         });
 
                     } else {
-                        alert('already has a row!');
-                    }
+                        alert('already has a row - read it ...');
 
-                    db.transaction(function (tx) {
-                        tx.executeSql("select top 1 lastUpdateText as lastUpdate from LastTOCUpdate;", [], function (tx, res) {
-                            var retval = res.rows.item(0).lastUpdate;
-                            alert('result: ' + retval);
+                        db.transaction(function (tx) {
+                            tx.executeSql("select top 1 lastUpdateText as lastUpdate from LastTOCUpdate;", [], function (tx, res) {
+                                var retval = res.rows.item(0).lastUpdate;
+                                alert('result: ' + retval);
 
-                            app.getServerTOCUpdate();
+                                app.getServerTOCUpdate();
 
-                            return retval;
+                                return retval;
+                            });
                         });
-                    });
+                    }
                 });
             });
         });
