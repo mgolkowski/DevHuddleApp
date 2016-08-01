@@ -38,17 +38,18 @@ var app = {
 
     onDeviceReady: function () {
 
-        alert('STARTING ...');
+        alert('STARTING v2. ...');
         
         app.receivedEvent('deviceready');
         db = window.sqlitePlugin.openDatabase({ name: "my.db" });
 
-        app.getLastContentsUpdate();
+        app.updateTOC();
     },
 
     // Reads the last update timestamp of the table of contents from the database
     // If never updated (first time) then set it to 1900-01-01 to force initial refresh
-    getLastContentsUpdate: function () {
+    // Then, compare this timestamp against server, if if server is newer then refresh TOC 
+    updateTOC: function () {
 
         db.transaction(function (tx) {
 
@@ -85,6 +86,10 @@ var app = {
                 });
             });
         });
+    },
+
+    getServerTOCUpdate: function () {
+
     },
 
     setupDatabase: function () {
