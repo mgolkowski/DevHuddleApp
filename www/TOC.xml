@@ -1,0 +1,12 @@
+<TOC>
+	<dataItem>
+		<id>1</id>
+		<title>Test 1</title>
+		<dscr>my dscr</dscr>
+	</dataItem>
+	<dataItem>
+		<id>2</id>
+		<title>ZZZ</title>
+		<dscr>i hope this works</dscr>
+	</dataItem>
+</TOC>

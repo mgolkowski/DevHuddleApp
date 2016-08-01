@@ -145,9 +145,10 @@ var app = {
                 alert(data);
                 var xmlDoc = $.parseXML(data),
                 $xml = $(xmlDoc),
-                $lastUpdate = $xml.find("tocItem");
-
-                alert($lastUpdate);
+                $toc = $xml.find("TOC");
+                alert('TOC: ' + $lastUpdate);
+                $dataItem = $toc.find('dataItem');
+                alert('$dataItem: ' + $dataItem);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Error status :" + textStatus);
