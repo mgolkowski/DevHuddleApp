@@ -58,7 +58,7 @@ var app = {
 
             var numRows = 0;
             db.transaction(function (tx) {
-                tx.executeSql("select count(id) as cnt from LastTOCUpdate;", [], function (tx, res) {
+                tx.executeSql("select count(lastUpdate) as cnt from LastTOCUpdate;", [], function (tx, res) {
                     numRows = res.rows.item(0).cnt;
                 });
             });
@@ -89,7 +89,35 @@ var app = {
     },
 
     getServerTOCUpdate: function () {
+        $.ajax({
+            url: 'http://twitter.com/statuses/public_timeline.xml',
+            dataType: "xml",
+            contentType: 'application/xml',
+            timeout: 10000,
+            type: 'POST',
+            success: function (data) {
 
+                alert(data);
+                var xmlDoc = $.parseXML(data),
+                $xml = $(xmlDoc),
+                $title = $xml.find("title");
+
+                /* append "RSS Title" to #someElement */
+                $("#someElement").append($title.text());
+
+                /* change the title to "XML Title" */
+                $title.text("XML Title");
+
+                /* append "XML Title" to #anotherElement */
+                $("#anotherElement").append($title.text());
+
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error status :" + textStatus);
+                alert("Error type :" + errorThrown);
+                alert("Error message :" + XMLHttpRequest.responseXML);
+            }
+        });
     },
 
     setupDatabase: function () {
