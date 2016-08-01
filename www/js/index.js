@@ -103,36 +103,58 @@ var app = {
 
     doServerTOCUpdate: function (lastTimestamp) {
         alert('about to retrieve from: ' + baseURL + 'LastTOCUpdate.xml');
-        try {
-            $.ajax({
-                url: baseURL + 'LastTOCUpdate.xml',
-                type: 'GET',
-                success: function (data) {
 
-                    alert(data);
-                    var xmlDoc = $.parseXML(data),
-                    $xml = $(xmlDoc),
-                    $lastUpdate = $xml.find("lastUpdate");
+        $.ajax({
+            url: baseURL + 'LastTOCUpdate.xml',
+            type: 'GET',
+            success: function (data) {
 
-                    var dLastUpdateServer = new Date($lastUpdate.text());
-                    var dLastTimestamp = new Date(lastTimestamp);
+                alert(data);
+                var xmlDoc = $.parseXML(data),
+                $xml = $(xmlDoc),
+                $lastUpdate = $xml.find("lastUpdate");
 
-                    if (dLastUpdateServer > dLastTimestamp) {   // server is newer - refresh
-                        alert('server is newer - refresh');
-                    } else {
-                        alert('up to date');
-                    }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert("Error status :" + textStatus);
-                    alert("Error type :" + errorThrown);
-                    alert("Error message :" + XMLHttpRequest.responseXML);
+                var dLastUpdateServer = new Date($lastUpdate.text());
+                var dLastTimestamp = new Date(lastTimestamp);
+
+                if (dLastUpdateServer > dLastTimestamp) {   // server is newer - refresh
+                    alert('server is newer - refresh');
+                    app.refreshTOC();
+
+                } else {
+                    alert('up to date - display it');
                 }
-            });
-        } catch (e) {
-            alert("ERROR: " + e.message);
-        }
-        
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error status :" + textStatus);
+                alert("Error type :" + errorThrown);
+                alert("Error message :" + XMLHttpRequest.responseXML);
+            }
+        });        
+    },
+
+    // reload the table of contents from the server then display
+    refreshTOC: function () {
+        alert(' in refreshTOC');
+
+        $.ajax({
+            url: baseURL + 'TOC.xml',
+            type: 'GET',
+            success: function (data) {
+
+                alert(data);
+                var xmlDoc = $.parseXML(data),
+                $xml = $(xmlDoc),
+                $lastUpdate = $xml.find("tocItem");
+
+                alert($lastUpdate);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error status :" + textStatus);
+                alert("Error type :" + errorThrown);
+                alert("Error message :" + XMLHttpRequest.responseXML);
+            }
+        });
     },
 
     setupDatabase: function () {
