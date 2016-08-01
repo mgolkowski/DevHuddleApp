@@ -189,7 +189,6 @@ var app = {
 
     // load TOC from database and display
     loadTOC: function () {
-        alert('in loadTOC');
 
         db.transaction(function (tx) {
             tx.executeSql("SELECT * FROM TOC ORDER BY id;", [], function (tx, res) {
@@ -198,7 +197,8 @@ var app = {
                 alert('rows read: ' + numRows);
 
                 for (var i = 0; i < numrows; i++) {
-                    alert('reading: ' + res.rows.item(i).id + ' - ' + res.rows.item(i).title);
+                    alert('in here');
+                    alert('reading: ' + res.rows.item(i).title);
                 }
             });
         });
