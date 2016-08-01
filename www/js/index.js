@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-var dbobj;
+var db;
 
 var app = {
 
@@ -41,7 +41,7 @@ var app = {
         alert('STARTING ...');
         
         app.receivedEvent('deviceready');
-        dbObj = window.sqlitePlugin.openDatabase({ name: "my.db" });
+        db = window.sqlitePlugin.openDatabase({ name: "my.db" });
 
         alert('about to call db');
         app.setupDatabase();
