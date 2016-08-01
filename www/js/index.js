@@ -43,8 +43,7 @@ var app = {
         app.receivedEvent('deviceready');
         db = window.sqlitePlugin.openDatabase({ name: "my.db" });
 
-        alert(' getLastContentsUpdate(): ' + app.getLastContentsUpdate());
-        //app.setupDatabase();
+        app.getLastContentsUpdate();
     },
 
     // Reads the last update timestamp of the table of contents from the database
@@ -58,7 +57,7 @@ var app = {
 
             var numRows = 0;
             db.transaction(function (tx) {
-                tx.executeSql("select count(id) as cnt from test_table;", [], function (tx, res) {
+                tx.executeSql("select count(id) as cnt from LastTOCUpdate;", [], function (tx, res) {
                     numRows = res.rows.item(0).cnt;
                 });
             });
