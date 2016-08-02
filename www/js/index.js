@@ -209,7 +209,6 @@ var app = {
             }, function (e) {
                 alert("ERROR: " + e.message);
             });
-
         });
     },
 
@@ -227,7 +226,7 @@ var app = {
                 var numRows = res.rows.length;
                 var html = '';
                 for (var i = 0; i < numRows; i++) {
-                    html += '<div><a href="#" onclick="alert(\'1\'); app.viewArticle(' + res.rows.item(i) + ')">' + res.rows.item(i).title + '</a><p>' + res.rows.item(i).dscr + '</p></div>';
+                    html += '<div><a href="#" onclick="alert(\'1\'); app.viewArticle(' + res.rows.item(i).id + ')">' + res.rows.item(i).title + '</a><p>' + res.rows.item(i).dscr + '</p></div>';
                 }
                 $('#divTOC').html(html).show();
                 $('#deviceready').hide();
