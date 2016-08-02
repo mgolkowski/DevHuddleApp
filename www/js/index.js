@@ -13,6 +13,7 @@ var app = {
     },
 
     showMessage: function (msg) {
+        alert('in showMessage');
         $('.listening').text(msg);
     },
 
