@@ -12,6 +12,10 @@ var app = {
         this.bindEvents();
     },
 
+    showMessage: function (msg) {
+        $('.listening').html(msg);
+    },
+
     bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
@@ -28,6 +32,9 @@ var app = {
     },
 
     wipeAllData: function () {
+
+        app.showMessage('Wiping Data');
+
         db.transaction(function (tx) {
             tx.executeSql('DROP TABLE IF EXISTS LastTOCUpdate;');
             db.transaction(function (tx) {
