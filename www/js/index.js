@@ -212,8 +212,9 @@ var app = {
         });
     },
 
-    viewArticle: function (id) {
-        alert('in viewArticle: ' + id);
+    viewArticle: function (id,isDownloaded) {
+        alert('in viewArticle: ' + id + ', ' + isDownloaded);
+
     },
     // load TOC from database and display it on screen
     loadTOC: function () {
@@ -226,7 +227,7 @@ var app = {
                 var numRows = res.rows.length;
                 var html = '';
                 for (var i = 0; i < numRows; i++) {
-                    html += '<div><a href="#" onclick="alert(\'1\'); app.viewArticle(' + res.rows.item(i).id + ')">' + res.rows.item(i).title + '</a><p>' + res.rows.item(i).dscr + '</p></div>';
+                    html += '<div><a href="#" onclick="alert(\'1\'); app.viewArticle(' + res.rows.item(i).id + ',' + res.rows.item(i).isDownloaded + ')">' + res.rows.item(i).title + '</a><p>' + res.rows.item(i).dscr + '</p></div>';
                 }
                 $('#divTOC').html(html).show();
                 $('#deviceready').hide();
