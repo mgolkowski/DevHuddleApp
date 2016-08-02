@@ -1,23 +1,9 @@
- /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
 var db;
+
+// location of XML files
 var baseURL = 'https://raw.githubusercontent.com/mgolkowski/DevHuddleApp/master/www/';
+var lastUpdateURL = 'LastTOCUpdate.xml';
+var TOC_URL = 'TOC.xml';
 
 var app = {
 
@@ -25,59 +11,70 @@ var app = {
     initialize: function() {
         this.bindEvents();
     },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
+
+    bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
-
 
     onDeviceReady: function () {
        
         app.receivedEvent('deviceready');
         db = window.sqlitePlugin.openDatabase({ name: "my.db" });
         
-        app.createDatabases();
+        // start initialization
+        app.wipeAllData();
+        //app.createDatabases();
+
     },
 
-    // create databases, then call updateTOC when done
-    createDatabases: function () {
-
+    wipeAllData: function () {
         db.transaction(function (tx) {
+            tx.executeSql('DROP TABLE IF EXISTS LastTOCUpdate;');
+            db.transaction(function (tx) {
+                tx.executeSql('DROP TABLE IF EXISTS TOC;');
+                db.transaction(function (tx) {
+                    tx.executeSql('DROP TABLE IF EXISTS Article;');
+                    db.transaction(function (tx) {
 
+                        app.createDatabases();
+
+                    })
+                })
+            });
+        });        
+    },
+
+    // Create databases (if required), then call checkTOCTimestamp when done to continue initialization
+    createDatabases: function () {
+        db.transaction(function (tx) {
             tx.executeSql('CREATE TABLE IF NOT EXISTS LastTOCUpdate (lastUpdate text)');
             db.transaction(function (tx) {
                 tx.executeSql('CREATE TABLE IF NOT EXISTS TOC (id integer, title text, dscr text)');
                 db.transaction(function (tx) {
                     tx.executeSql('CREATE TABLE IF NOT EXISTS Article (id integer, html text)');
                     db.transaction(function (tx) {
-                        app.updateTOC(tx);
+
+                        app.checkTOCTimestamp(tx);  // all done, continue initialization by updating table of contents
+
                     })
                 })
             });
         });
     },
 
-    // Reads the last update timestamp of the table of contents from the database
-    // If never updated (first time) then set it to 1900-01-01 to force initial refresh
-    // Then, compare this timestamp against server, if if server is newer then refresh TOC 
-    updateTOC: function (tx) {
+    // Compare TOC timestamp on server with last TOC update in app
+    // Refresh TOC in app if needed, then continue initialization
+    checkTOCTimestamp: function (tx) {
 
-        alert('in updateTOC 2');
-
-        // DB exists or has been created.  Check for a row to hold data
+        // Check if LastTOCUpdate table has a row in it (to store last update timestamp)
         tx.executeSql("SELECT COUNT(*) AS cnt from LastTOCUpdate;", [], function (tx, res) {
 
-            alert('in here');
-            var numRows = res.rows.item(0).cnt;
-            alert('numRows: ' + numRows);
+            var numRows = res.rows.item(0).cnt; // number of rows in LastTOCUpdate
 
-            if (numRows == 0) { // no row =first time - set last update to 1900 to force initial refresh
+            // no row = first time - set last update to 1900 to force initial refresh, then continue
+            if (numRows == 0) { 
 
-                tx.executeSql("INSERT INTO LastTOCUpdate (lastUpdate) VALUES (?)", ["1900-01-01"], function (tx, res) {
-                            
+                tx.executeSql("INSERT INTO LastTOCUpdate (lastUpdate) VALUES (?)", ["1900-01-01"], function (tx, res) {                           
 
                     app.doServerTOCUpdate("1900-01-01");
 
@@ -85,7 +82,7 @@ var app = {
                     alert("ERROR: " + e.message);
                 });
 
-            } else { // already has a row - read it
+            } else { // already has a row - read last TOC update
 
                 db.transaction(function (tx) {
                     tx.executeSql("SELECT lastUpdate from LastTOCUpdate;", [], function (tx, res) {
@@ -102,13 +99,11 @@ var app = {
         });
     },
     
-    // checks TOC timestamp on server, and if > lastTimestamp then refresh TOC in database
-    // then renders splash screen
-
+    // Checks TOC timestamp on server.  If server timestamp > lastTimestamp then refresh TOC
     doServerTOCUpdate: function (lastTimestamp) {
 
         $.ajax({
-            url: baseURL + 'LastTOCUpdate.xml',
+            url: baseURL + lastUpdateURL,
             type: 'GET',
             success: function (data) {
 
@@ -119,11 +114,14 @@ var app = {
                 var dLastUpdateServer = new Date($lastUpdate.text());
                 var dLastTimestamp = new Date(lastTimestamp);
 
-                if (dLastUpdateServer > dLastTimestamp) {   // server is newer - refresh
+                if (dLastUpdateServer > dLastTimestamp) {   // TOC needs updating - grab new TOC from server
+
                     app.refreshTOC($lastUpdate.text());
 
-                } else {
-                    // UP TO DATE - just display TOC
+                } else { // TOC is up to date - just display it
+                    
+                    app.loadTOC();
+
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -138,7 +136,7 @@ var app = {
     refreshTOC: function (newTimestamp) {
 
         $.ajax({
-            url: baseURL + 'TOC.xml',
+            url: baseURL + TOC_URL,
             type: 'GET',
             success: function (data) {
 
@@ -160,43 +158,39 @@ var app = {
 
         db.transaction(function (tx) {
 
-            // Create DB table (if not already created) to store last TOC update
-            tx.executeSql('CREATE TABLE IF NOT EXISTS TOC (id integer, title text, dscr text)');
-            db.transaction(function (tx) {
 
-                // 1) delete all TOC in database
-                tx.executeSql("DELETE FROM TOC", [], function (tx, res) {
+            // 1) delete all TOC in database
+            tx.executeSql("DELETE FROM TOC", [], function (tx, res) {
 
-                    // 2) loop through all TOC items and put into databse
-                    var rowCnt = $(data).find('dataItem').length;
+                // 2) loop through all TOC items and put into databse
+                var rowCnt = $(data).find('dataItem').length;
 
-                    $(data).find('dataItem').each(function () {
+                $(data).find('dataItem').each(function () {
 
-                        var id = $(this).find('id').text();
-                        var title = $(this).find('title').text();
-                        var dscr = $(this).find('dscr').text();
+                    var id = $(this).find('id').text();
+                    var title = $(this).find('title').text();
+                    var dscr = $(this).find('dscr').text();
 
-                        tx.executeSql("INSERT INTO TOC (id, title, dscr) VALUES (?,?,?)", [id, title, dscr], function (tx, res) {
-                            alert('row inserted');
-                            rowCnt -= 1;
-                            if (rowCnt == 0) {
-                                alert("ALL DONE!!!");
-                                app.loadTOC();
-                            }
-                        }, function (e) {
-                            rowCnt -= 1;
-                            alert("ERROR: " + e.message);
-                        });
-                        
+                    tx.executeSql("INSERT INTO TOC (id, title, dscr) VALUES (?,?,?)", [id, title, dscr], function (tx, res) {
+                        alert('row inserted');
+                        rowCnt -= 1;
+                        if (rowCnt == 0) {
+                            alert("ALL DONE!!!");
+                            app.loadTOC();
+                        }
+                    }, function (e) {
+                        rowCnt -= 1;
+                        alert("ERROR: " + e.message);
                     });
-
-                    // 3) update timestamp
-
-                }, function (e) {
-                    alert("ERROR: " + e.message);
+                        
                 });
 
+                // 3) update timestamp
+
+            }, function (e) {
+                alert("ERROR: " + e.message);
             });
+
         });
     },
 
