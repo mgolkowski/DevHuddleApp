@@ -32,10 +32,7 @@ var app = {
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
+
 
     onDeviceReady: function () {
        
@@ -47,7 +44,6 @@ var app = {
 
     // create databases, then call updateTOC when done
     createDatabases: function () {
-        alert('in createDatabases');
 
         db.transaction(function (tx) {
 
@@ -57,8 +53,6 @@ var app = {
                 db.transaction(function (tx) {
                     tx.executeSql('CREATE TABLE IF NOT EXISTS Article (id integer, html text)');
                     db.transaction(function (tx) {
-
-                        alert('databases created.');
                         app.updateTOC(tx);
                     })
                 })
@@ -75,14 +69,17 @@ var app = {
 
         // DB exists or has been created.  Check for a row to hold data
         tx.executeSql("SELECT COUNT(*) AS cnt from LastTOCUpdate;", [], function (tx, res) {
+
+            alert('in here');
             var numRows = res.rows.item(0).cnt;
+            alert('numRows: ' + numRows);
 
             if (numRows == 0) { // no row =first time - set last update to 1900 to force initial refresh
 
                 tx.executeSql("INSERT INTO LastTOCUpdate (lastUpdate) VALUES (?)", ["1900-01-01"], function (tx, res) {
                             
 
-                    app.getServerTOCUpdate("1900-01-01");
+                    app.doServerTOCUpdate("1900-01-01");
 
                 }, function (e) {
                     alert("ERROR: " + e.message);
@@ -94,6 +91,7 @@ var app = {
                     tx.executeSql("SELECT lastUpdate from LastTOCUpdate;", [], function (tx, res) {
 
                         var retval = res.rows.item(0).lastUpdate;
+
                         app.doServerTOCUpdate(retval);
 
                     }, function (e) {
