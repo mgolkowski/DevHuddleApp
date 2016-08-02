@@ -13,7 +13,7 @@ var app = {
     },
 
     showMessage: function (msg) {
-        $('.listening').html(msg);
+        $('.listening').val(msg);
     },
 
     bindEvents: function () {
