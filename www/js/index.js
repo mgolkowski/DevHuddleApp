@@ -25,6 +25,8 @@ var app = {
         app.receivedEvent('deviceready');
         db = window.sqlitePlugin.openDatabase({ name: "my.db" });
         
+        // TEST ONLY - don't wipe it on load once it's working
+
         // start initialization
         app.wipeAllData();
         //app.createDatabases();
@@ -53,6 +55,9 @@ var app = {
 
     // Create databases (if required), then call checkTOCTimestamp when done to continue initialization
     createDatabases: function () {
+
+        app.showMessage('Creating databases');
+
         db.transaction(function (tx) {
             tx.executeSql('CREATE TABLE IF NOT EXISTS LastTOCUpdate (lastUpdate text)');
             db.transaction(function (tx) {
@@ -73,6 +78,8 @@ var app = {
     // Refresh TOC in app if needed, then continue initialization
     checkTOCTimestamp: function (tx) {
 
+        app.showMessage('Processing updates');
+
         // Check if LastTOCUpdate table has a row in it (to store last update timestamp)
         tx.executeSql("SELECT COUNT(*) AS cnt from LastTOCUpdate;", [], function (tx, res) {
 
@@ -86,7 +93,7 @@ var app = {
                     app.doServerTOCUpdate("1900-01-01");
 
                 }, function (e) {
-                    alert("ERROR: " + e.message);
+                    app.showMessage("ERROR (checkTOCTimestamp): " + e.message);
                 });
 
             } else { // already has a row - read last TOC update
@@ -99,7 +106,7 @@ var app = {
                         app.doServerTOCUpdate(retval);
 
                     }, function (e) {
-                        alert("ERROR: " + e.message);
+                        app.showMessage("ERROR (checkTOCTimestamp): " + e.message);
                     });
                 });
             }
@@ -108,6 +115,8 @@ var app = {
     
     // Checks TOC timestamp on server.  If server timestamp > lastTimestamp then refresh TOC
     doServerTOCUpdate: function (lastTimestamp) {
+
+        app.showMessage('Checking for updates');
 
         $.ajax({
             url: baseURL + lastUpdateURL,
@@ -142,6 +151,8 @@ var app = {
     // reload the table of contents from the server then display
     refreshTOC: function (newTimestamp) {
 
+        app.showMessage('Retrieving new TOC from server');
+
         $.ajax({
             url: baseURL + TOC_URL,
             type: 'GET',
@@ -163,6 +174,8 @@ var app = {
 
     refreshTOCDB: function (data) {
 
+        app.showMessage('Refreshing TOC in database');
+
         db.transaction(function (tx) {
 
 
@@ -180,10 +193,8 @@ var app = {
 
                     tx.executeSql("INSERT INTO TOC (id, title, dscr, isDownloaded) VALUES (?,?,?,?)", [id, title, dscr, 0], function (tx, res) {
 
-                        alert('row inserted : TODO - set isDownloaded');
                         rowCnt -= 1;
                         if (rowCnt == 0) {
-                            alert("ALL DONE!!!");
                             app.loadTOC();
                         }
                     }, function (e) {
@@ -205,6 +216,7 @@ var app = {
     // load TOC from database and display it on screen
     loadTOC: function () {
 
+        app.showMessage('Loading TOC for display');
         
         db.transaction(function (tx) {
             tx.executeSql("SELECT * FROM TOC ORDER BY id;", [], function (tx, res) {
