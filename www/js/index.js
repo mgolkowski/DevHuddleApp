@@ -65,7 +65,7 @@ var app = {
     // Then, compare this timestamp against server, if if server is newer then refresh TOC 
     updateTOC: function (tx) {
 
-        alert('in updateTOC');
+        alert('in updateTOC 2');
 
         // DB exists or has been created.  Check for a row to hold data
         tx.executeSql("SELECT COUNT(*) AS cnt from LastTOCUpdate;", [], function (tx, res) {
