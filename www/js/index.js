@@ -4,6 +4,7 @@ var db;
 var baseURL = 'https://raw.githubusercontent.com/mgolkowski/DevHuddleApp/master/www/';
 var lastUpdateURL = 'LastTOCUpdate.xml';
 var TOC_URL = 'TOC.xml';
+var ARTICLE_URL = "ArticleARTICLEID.xml";
 
 var app = {
 
@@ -212,9 +213,35 @@ var app = {
         });
     },
 
-    viewArticle: function (id,isDownloaded) {
-        alert('in viewArticle: ' + id + ', ' + isDownloaded);
+    loadArticle: function (id,isDownloaded) {
 
+        if (isDownloaded) { // article is cached, display cached article
+
+        } else { // article not yet cached - grab it from server
+
+            app.showMessage('Loading article from server');
+
+            $.ajax({
+                url: baseURL + ARTICLE_URL.replace("ARTICLEID", id),
+                type: 'GET',
+                success: function (data) {
+
+                    alert('success: ' + data);
+
+                    var xmlDoc = $.parseXML(data);
+                    $xml = $(xmlDoc);
+
+                    $('#divTOC').hide();
+                    $('#divArticle').html($xml.find('html').text()).show();
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Error status :" + textStatus);
+                    alert("Error type :" + errorThrown);
+                    alert("Error message :" + XMLHttpRequest.responseXML);
+                }
+            });
+        }
     },
     // load TOC from database and display it on screen
     loadTOC: function () {
@@ -227,7 +254,7 @@ var app = {
                 var numRows = res.rows.length;
                 var html = '';
                 for (var i = 0; i < numRows; i++) {
-                    html += '<div><a href="#" onclick="alert(\'1\'); app.viewArticle(' + res.rows.item(i).id + ',' + res.rows.item(i).isDownloaded + ')">' + res.rows.item(i).title + '</a><p>' + res.rows.item(i).dscr + '</p></div>';
+                    html += '<div><a href="#" onclick="alert(\'1\'); app.loadArticle(' + res.rows.item(i).id + ',' + res.rows.item(i).isDownloaded + ')">' + res.rows.item(i).title + '</a><p>' + res.rows.item(i).dscr + '</p></div>';
                 }
                 $('#divTOC').html(html).show();
                 $('#deviceready').hide();
