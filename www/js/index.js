@@ -13,7 +13,7 @@ var app = {
     },
 
     showMessage: function (msg) {
-        $('.listening').val(msg);
+        $('.listening').text(msg);
     },
 
     bindEvents: function () {
@@ -56,7 +56,7 @@ var app = {
         db.transaction(function (tx) {
             tx.executeSql('CREATE TABLE IF NOT EXISTS LastTOCUpdate (lastUpdate text)');
             db.transaction(function (tx) {
-                tx.executeSql('CREATE TABLE IF NOT EXISTS TOC (id integer, title text, dscr text)');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS TOC (id integer, title text, dscr text, isDownloaded integer)');
                 db.transaction(function (tx) {
                     tx.executeSql('CREATE TABLE IF NOT EXISTS Article (id integer, html text)');
                     db.transaction(function (tx) {
@@ -178,8 +178,9 @@ var app = {
                     var title = $(this).find('title').text();
                     var dscr = $(this).find('dscr').text();
 
-                    tx.executeSql("INSERT INTO TOC (id, title, dscr) VALUES (?,?,?)", [id, title, dscr], function (tx, res) {
-                        alert('row inserted');
+                    tx.executeSql("INSERT INTO TOC (id, title, dscr, isDownloaded) VALUES (?,?,?,?)", [id, title, dscr, 0], function (tx, res) {
+
+                        alert('row inserted : TODO - set isDownloaded');
                         rowCnt -= 1;
                         if (rowCnt == 0) {
                             alert("ALL DONE!!!");
