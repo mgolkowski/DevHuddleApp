@@ -13,9 +13,7 @@ var app = {
     },
 
     showMessage: function (msg) {
-        alert('in showMessage: ' + msg);
-        alert($('.listening').length);
-        $('.listening').text(msg);
+        $('.received').text(msg);
     },
 
     bindEvents: function () {
