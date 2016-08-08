@@ -117,6 +117,8 @@
     -->
 
     <access origin="*"/>
+
+    <allow-navigation href="http://*/*" />
             
     <!-- Added the following intents to support the removal of whitelist code from base cordova to a plugin -->
     <!-- Whitelist configuration. Refer to https://cordova.apache.org/docs/en/edge/guide_appdev_whitelist_index.md.html -->
