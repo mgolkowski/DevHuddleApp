@@ -233,7 +233,7 @@ var app = {
                     $('#divArticle').html($xml.find('html').text()).show();
 
                     alert('images: ' + $('#divArticle').find('img').length);
-                    alert('src: ' + $('#divArticle').find('img')[0].attr('src'));
+                    alert('src: ' + $('#divArticle').find('img:first').attr('src'));
 
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
