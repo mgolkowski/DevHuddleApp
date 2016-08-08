@@ -229,8 +229,11 @@ var app = {
                     var xmlDoc = $.parseXML(data);
                     $xml = $(xmlDoc);
 
+                    var theHTML = '<div style="margin-bottom: 20px"><a href="#" onclick="app.goToTOC(); return false">back to table oc contents</a></div>';
+                    theHTML += $xml.find('html').text();
+
                     $('#divTOC').hide();
-                    $('#divArticle').html($xml.find('html').text()).show();
+                    $('#divArticle').html(theHTML).show();
 
                     //alert('html: ' + $('#divArticle').html());
                     //alert('images: ' + $('#divArticle').find('img').length);
@@ -245,6 +248,10 @@ var app = {
                 }
             });
         }
+    },
+    goToTOC: function () {
+        $('#divArticle').hide();
+        $('#divTOC').show();
     },
     // load TOC from database and display it on screen
     loadTOC: function () {
