@@ -226,13 +226,14 @@ var app = {
                 type: 'GET',
                 success: function (data) {
 
-                    alert('success: ' + data);
-
                     var xmlDoc = $.parseXML(data);
                     $xml = $(xmlDoc);
 
                     $('#divTOC').hide();
                     $('#divArticle').html($xml.find('html').text()).show();
+
+                    alert('images: ' + $('#divArticle').find('img').length);
+                    alert('src: ' + $('#divArticle').find('img')[0].attr('src'));
 
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
