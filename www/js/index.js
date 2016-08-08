@@ -229,7 +229,7 @@ var app = {
                     var xmlDoc = $.parseXML(data);
                     $xml = $(xmlDoc);
 
-                    var theHTML = '<div style="margin-bottom: 20px"><a href="#" onclick="app.goToTOC(); return false">back to table oc contents</a></div>';
+                    var theHTML = '<div style="margin-bottom: 20px"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>';
                     theHTML += $xml.find('html').text();
 
                     $('#divTOC').hide();
@@ -264,7 +264,7 @@ var app = {
                 var numRows = res.rows.length;
                 var html = '';
                 for (var i = 0; i < numRows; i++) {
-                    html += '<div><a href="#" onclick="alert(\'1\'); app.loadArticle(' + res.rows.item(i).id + ',' + res.rows.item(i).isDownloaded + ')">' + res.rows.item(i).title + '</a><p>' + res.rows.item(i).dscr + '</p></div>';
+                    html += '<div><a href="#" onclick="app.loadArticle(' + res.rows.item(i).id + ',' + res.rows.item(i).isDownloaded + ')">' + res.rows.item(i).title + '</a><p>' + res.rows.item(i).dscr + '</p></div>';
                 }
                 $('#divTOC').html(html).show();
                 $('#deviceready').hide();
