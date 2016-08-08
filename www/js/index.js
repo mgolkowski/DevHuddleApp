@@ -232,10 +232,10 @@ var app = {
                     $('#divTOC').hide();
                     $('#divArticle').html($xml.find('html').text()).show();
 
-                    alert('html: ' + $('#divArticle').html());
-                    alert('images: ' + $('#divArticle').find('img').length);
-                    alert('src: ' + $('#divArticle').find('img:first').attr('src'));
-                    alert('val: ' + $xml.find('html').text());
+                    //alert('html: ' + $('#divArticle').html());
+                    //alert('images: ' + $('#divArticle').find('img').length);
+                    //alert('src: ' + $('#divArticle').find('img:first').attr('src'));
+                    //alert('val: ' + $xml.find('html').text());
 
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
