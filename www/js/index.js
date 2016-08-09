@@ -237,7 +237,7 @@ var app = {
 
                     var theHTML = '<img src="img/logo.png" style="max-width: 100%" /><div style="margin-bottom: 20px"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>';
                     theHTML += $xml.find('html').text();
-                    theHTML += '<div style="margin-top: 20px"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>'
+                    theHTML += '<div style="margin: 20px 0 20px 0"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>'
 
                     $('#divTOC').hide();
                     $('#divLoading').hide();
