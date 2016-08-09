@@ -113,3 +113,12 @@ h1 {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
 }
+.aTOC {
+    font-size: 20px;
+}
+.pTOC {
+    font-size: 16px;
+}
+.clsDivTOC {
+    padding: 15px;
+}

@@ -264,7 +264,7 @@ var app = {
                 var numRows = res.rows.length;
                 var html = '';
                 for (var i = 0; i < numRows; i++) {
-                    html += '<div><a href="#" onclick="app.loadArticle(' + res.rows.item(i).id + ',' + res.rows.item(i).isDownloaded + ')">' + res.rows.item(i).title + '</a><p>' + res.rows.item(i).dscr + '</p></div>';
+                    html += '<div class="clsDivTOC"><a class="aTOC" href="#" onclick="app.loadArticle(' + res.rows.item(i).id + ',' + res.rows.item(i).isDownloaded + ')">' + res.rows.item(i).title + '</a><p class="pTOC">' + res.rows.item(i).dscr + '</p></div>';
                 }
                 $('#divTOC').html(html).show();
                 $('#deviceready').hide();
