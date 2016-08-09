@@ -235,8 +235,9 @@ var app = {
                     var xmlDoc = $.parseXML(data);
                     $xml = $(xmlDoc);
 
-                    var theHTML = '<div style="margin-bottom: 20px"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>';
+                    var theHTML = '<img src="img/logo.png" style="max-width: 100%" /><div style="margin-bottom: 20px"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>';
                     theHTML += $xml.find('html').text();
+                    theHTML += '<div style="margin-top: 20px"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>'
 
                     $('#divTOC').hide();
                     $('#divLoading').hide();
