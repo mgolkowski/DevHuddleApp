@@ -6,14 +6,14 @@
         id        = "com.phonegap.helloworld"
         version   = "1.0.0">
 
-    <name>Hello World</name>
+    <name>World Vision Article App</name>
 
     <description>
-        Hello World sample application that responds to the deviceready event.
+        Download and read World Vision articles offline
     </description>
 
-    <author href="http://phonegap.com" email="support@phonegap.com">
-        PhoneGap Team
+    <author href="http://www.worldvision.com.au" email="michael.golkowski@worldvision.com.au">
+        Michael Golkowski
     </author>
 
     <!--
