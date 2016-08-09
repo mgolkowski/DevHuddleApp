@@ -254,7 +254,7 @@ var app = {
     },
     goToTOC: function () {
         $('#divArticle').hide();
-        $('#divTOC').show();
+        loadTOC();
     },
     // load TOC from database and display it on screen
     loadTOC: function () {
