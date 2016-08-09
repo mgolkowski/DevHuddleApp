@@ -254,10 +254,13 @@ var app = {
     },
     goToTOC: function () {
         $('#divArticle').hide();
+        $('#divLoading').show();
         loadTOC();
     },
     // load TOC from database and display it on screen
     loadTOC: function () {
+
+        alert('in loadTOC');
 
         app.showMessage('Loading TOC for display');
         
