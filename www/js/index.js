@@ -265,7 +265,7 @@ var app = {
             tx.executeSql("SELECT * FROM TOC ORDER BY id;", [], function (tx, res) {
 
                 var numRows = res.rows.length;
-                var html = '<img src="img/logo.png" style="max-width: 100%" /><h1 style="margin-top: 20px">Table of Contents</h1><hr/>';
+                var html = '<img src="img/logo.png" style="max-width: 100%" /><a href="#" onclick="app.exitFromApp(); return false">close app</a><h1 style="margin-top: 20px">Table of Contents</h1><hr/>';
                 for (var i = 0; i < numRows; i++) {
                     html += '<div class="clsDivTOC"><a class="aTOC" href="#" onclick="app.loadArticle(' + res.rows.item(i).id + ',' + res.rows.item(i).isDownloaded + ')">' + res.rows.item(i).title + '</a><p class="pTOC">' + res.rows.item(i).dscr + '</p></div>';
                 }
@@ -278,5 +278,9 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         $('#divLoading').hide();
+    },
+
+    exitFromApp: function() {
+        navigator.app.exitApp();
     }
 };
