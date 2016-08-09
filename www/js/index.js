@@ -219,6 +219,10 @@ var app = {
 
         } else { // article not yet cached - grab it from server
 
+            $('#divArticle').hide();
+            $('#divTOC').hide();
+            $('#divLoading').show();
+
             app.showMessage('Loading article from server');
 
             $.ajax({
@@ -233,12 +237,8 @@ var app = {
                     theHTML += $xml.find('html').text();
 
                     $('#divTOC').hide();
+                    $('#divLoading').hide();
                     $('#divArticle').html(theHTML).show();
-
-                    //alert('html: ' + $('#divArticle').html());
-                    //alert('images: ' + $('#divArticle').find('img').length);
-                    //alert('src: ' + $('#divArticle').find('img:first').attr('src'));
-                    //alert('val: ' + $xml.find('html').text());
 
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
