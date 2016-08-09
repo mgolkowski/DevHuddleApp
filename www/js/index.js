@@ -14,7 +14,7 @@ var app = {
     },
 
     showMessage: function (msg) {
-        $('.received').text(msg);
+        $('.listening').text(msg);
     },
 
     bindEvents: function () {
