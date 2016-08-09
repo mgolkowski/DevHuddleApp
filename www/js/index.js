@@ -217,6 +217,8 @@ var app = {
 
         if (isDownloaded) { // article is cached, display cached article
 
+            alert('todo!!! display cached article');
+
         } else { // article not yet cached - grab it from server
 
             $('#divArticle').hide();
@@ -262,7 +264,7 @@ var app = {
             tx.executeSql("SELECT * FROM TOC ORDER BY id;", [], function (tx, res) {
 
                 var numRows = res.rows.length;
-                var html = '';
+                var html = '<h1>Table of Contents</h1><hr/>';
                 for (var i = 0; i < numRows; i++) {
                     html += '<div class="clsDivTOC"><a class="aTOC" href="#" onclick="app.loadArticle(' + res.rows.item(i).id + ',' + res.rows.item(i).isDownloaded + ')">' + res.rows.item(i).title + '</a><p class="pTOC">' + res.rows.item(i).dscr + '</p></div>';
                 }
