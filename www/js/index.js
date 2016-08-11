@@ -232,9 +232,9 @@ var app = {
 
         if (isDownloaded) { // article is cached, display cached article
 
-            alert('about to run select for ' + id);
+            alert('xxx about to run select for ' + id);
 
-            tx.executeSql("SELECT * FROM Article WHERE id = ?;", [parseInt(id)], function (tx, res) {
+            tx.executeSql("SELECT * FROM Article;", [], function (tx, res) {
                 alert('length: ' + res.rows.item.length);
                 if (res.rows.item.length > 0) {
                     var articleHTML = res.rows.item(i).html;
