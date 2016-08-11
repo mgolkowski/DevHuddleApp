@@ -234,14 +234,9 @@ var app = {
 
             db.transaction(function (tx) {
                 tx.executeSql("SELECT * FROM Article WHERE id = ?;", [parseInt(id)], function (tx, res) {
-                    alert('length: ' + res.rows.item.length);
                     if (res.rows.item.length > 0) {
 
-                        alert('getting html');
                         var articleHTML = res.rows.item(0).html;
-                        alert('done');
-                        alert(articleHTML);
-
                         var theHTML = '<img src="img/logo.png" style="max-width: 100%" /><div style="margin-bottom: 20px"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>';
                         theHTML += '<div style="margin-right: 20px">' + articleHTML + '</div>';
                         theHTML += '<div style="margin: 20px 0 20px 0"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>'
@@ -250,7 +245,6 @@ var app = {
                         $('#divLoading').hide();
                         $('#divArticle').html(theHTML).show();
 
-                        alert('loaded from database!!!');
                     }
                     for (var i = 0; i < res.rows.item.length; i++) {
                         tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id]);
@@ -326,7 +320,11 @@ var app = {
                 var numRows = res.rows.length;
                 var html = '<img src="img/logo.png" style="max-width: 100%" /><a href="#" onclick="app.exitFromApp(); return false">close app</a><h1 style="margin-top: 20px">Table of Contents</h1><hr/>';
                 for (var i = 0; i < numRows; i++) {
-                    html += '<div class="clsDivTOC"><a class="aTOC" href="#" onclick="app.loadArticle(' + res.rows.item(i).id + ',' + res.rows.item(i).isDownloaded + ')">' + res.rows.item(i).title + '</a><p class="pTOC">' + res.rows.item(i).dscr + '</p></div>';
+                    html += '<div class="clsDivTOC';
+                    if (res.rows.item(i).isDownloaded == 1) {
+                        html += ' clsOffline';
+                    }
+                    html +='"><a class="aTOC" href="#" onclick="app.loadArticle(' + res.rows.item(i).id + ',' + res.rows.item(i).isDownloaded + ')">' + res.rows.item(i).title + '</a><p class="pTOC">' + res.rows.item(i).dscr + '</p></div>';
                 }
                 $('#divTOC').html(html).show();
                 $('#divLoading').hide();
