@@ -262,7 +262,9 @@ var app = {
 
                     // TODO: 1) insert into Article table
                     alert('about to insert article');
-                    tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [id, $xml.find('html').text()], function (tx, res) {
+                    alert(id);
+                    alert($xml.find('html').text());
+                    tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [parseInt(id), $xml.find('html').text()], function (tx, res) {
 
                         alert('article inserted. about to refresh TOC');
                         app.populateTOCisDownloaded();
