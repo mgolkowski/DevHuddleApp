@@ -279,7 +279,7 @@ var app = {
         alert('in saveArticle');
 
         db.transaction(function (tx) {
-            tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [id, theXML], function (tx, res) {                    
+            tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [id, theXML], function (tx, res) {
 
                 alert('article inserted. about to refresh TOC');
                 app.populateTOCisDownloaded();
@@ -289,7 +289,7 @@ var app = {
                 alert('error here');
                 app.showMessage("ERROR (checkTOCTimestamp): " + e.message);
             });
-        }
+        });
     },
     goToTOC: function () {
         $('#divArticle').hide();
