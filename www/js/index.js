@@ -262,25 +262,32 @@ var app = {
                     $('#divLoading').hide();
                     $('#divArticle').html(theHTML).show();
 
-                    // TODO: 1) insert into Article table
-                    db.transaction(function (tx) {
-                        tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [parseInt(id), theXML], function (tx, res) {                    
-
-                            alert('article inserted. about to refresh TOC');
-                            app.populateTOCisDownloaded();
-
-                        }, function (e) {
-
-                            alert('error here');
-                            app.showMessage("ERROR (checkTOCTimestamp): " + e.message);
-                        });
-                    }
+                    // save article in database and update TOC
+                    app.saveArticle(parseInt(id), theXML);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("Error status :" + textStatus);
                     alert("Error type :" + errorThrown);
                     alert("Error message :" + XMLHttpRequest.responseXML);
                 }
+            });
+        }
+    },
+
+    saveArticle: function(id, theXML) {
+        
+        alert('in saveArticle');
+
+        db.transaction(function (tx) {
+            tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [id, theXML], function (tx, res) {                    
+
+                alert('article inserted. about to refresh TOC');
+                app.populateTOCisDownloaded();
+
+            }, function (e) {
+
+                alert('error here');
+                app.showMessage("ERROR (checkTOCTimestamp): " + e.message);
             });
         }
     },
