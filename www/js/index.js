@@ -236,7 +236,11 @@ var app = {
                 tx.executeSql("SELECT * FROM Article WHERE id = ?;", [parseInt(id)], function (tx, res) {
                     alert('length: ' + res.rows.item.length);
                     if (res.rows.item.length > 0) {
+
+                        alert('getting html');
                         var articleHTML = res.rows.item(i).html;
+                        alert('done');
+                        alert(articleHTML);
 
                         var theHTML = '<img src="img/logo.png" style="max-width: 100%" /><div style="margin-bottom: 20px"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>';
                         theHTML += '<div style="margin-right: 20px">' + articleHTML + '</div>';
