@@ -243,6 +243,8 @@ var app = {
                     $('#divLoading').hide();
                     $('#divArticle').html(theHTML).show();
 
+                    // TODO: 1) insert into Article table
+                    // TODO: 2) refresh TOC.IsDownloaded
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("Error status :" + textStatus);
