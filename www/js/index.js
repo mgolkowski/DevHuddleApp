@@ -263,18 +263,18 @@ var app = {
                     $('#divArticle').html(theHTML).show();
 
                     // TODO: 1) insert into Article table
-                    //tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [parseInt(id), theXML], function (tx, res) {
-                    tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [1, 'test'], function (tx, res) {
+                    db.transaction(function (tx) {
+                        tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [parseInt(id), theXML], function (tx, res) {                    
 
-                        alert('article inserted. about to refresh TOC');
-                        app.populateTOCisDownloaded();
+                            alert('article inserted. about to refresh TOC');
+                            app.populateTOCisDownloaded();
 
-                    }, function (e) {
+                        }, function (e) {
 
-                        alert('error here');
-                        app.showMessage("ERROR (checkTOCTimestamp): " + e.message);
-                    });
-
+                            alert('error here');
+                            app.showMessage("ERROR (checkTOCTimestamp): " + e.message);
+                        });
+                    }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("Error status :" + textStatus);
