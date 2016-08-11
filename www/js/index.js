@@ -47,8 +47,8 @@ var app = {
                     alert('select done.');
                     for (var i = 0; i < res.rows.item.length; i++) {
                         alert('i = ' + i);
-                        alert('id = ' + res.rows.item[i].id);
-                        alert('processing id ' + res.rows.item[i].id);
+                        alert('id = ' + res.rows.item(i).id);
+                        alert('processing id ' + res.rows.item(i).id);
                     }
                 });
             });
