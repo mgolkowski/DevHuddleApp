@@ -262,12 +262,15 @@ var app = {
 
                     // TODO: 1) insert into Article table
                     alert('about to insert article');
+                    alert($xml.find('id').text());
+                    alert($xml.find('html').text());
                     tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [$xml.find('id').text(), $xml.find('html').text()], function (tx, res) {
 
                         alert('article inserted. about to refresh TOC');
                         app.populateTOCisDownloaded();
 
                     }, function (e) {
+                        alert('error here');
                         app.showMessage("ERROR (checkTOCTimestamp): " + e.message);
                     });
 
