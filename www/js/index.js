@@ -40,15 +40,19 @@ var app = {
         db.transaction(function (tx) {
             tx.executeSql("UPDATE TOC SET isDownloaded = 0", [], function (tx, res) {
 
-                alert('updated. about to do select');
-                tx.executeSql("SELECT * FROM Article;", [], function (tx, res) {
+                tx.executeSql("SELECT COUNT(*) AS cnt from LastTOCUpdate;", [], function (tx, res) {
+                    alert('count done');
+                    alert(res.rows.item(0).cnt);
+                    alert('About to do select - BUG HERE !!! only the first gets returned/inserted?');
+                    tx.executeSql("SELECT * FROM Article;", [], function (tx, res) {
 
-                    alert('total rows in article: ' + res.rows.item.length);
-                    for (var i = 0; i < res.rows.item.length; i++) {
-                        alert('found article record: ' + res.rows.item(i).id);
-                        tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id]);
-                    }
-                });
+                        alert('total rows in article: ' + res.rows.item.length);
+                        for (var i = 0; i < res.rows.item.length; i++) {
+                            alert('found article record: ' + res.rows.item(i).id);
+                            tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id]);
+                        }
+                    });
+                });                
             });
         });        
     },
