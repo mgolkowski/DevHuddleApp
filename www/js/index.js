@@ -41,14 +41,9 @@ var app = {
             tx.executeSql("UPDATE TOC SET isDownloaded = 0", [], function (tx, res) {
 
                 tx.executeSql("SELECT COUNT(*) AS cnt from Article;", [], function (tx, res) {
-                    alert('count done. rows in article ...');
-                    alert(res.rows.item(0).cnt);
-                    alert('About to do select - BUG HERE !!! only the first gets returned/inserted?');
                     tx.executeSql("SELECT * FROM Article;", [], function (tx, res) {
 
-                        alert('total rows in article: ' + res.rows.length);
                         for (var i = 0; i < res.rows.length; i++) {
-                            alert('found article record: ' + res.rows.item(i).id);
                             tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id]);
                         }
                     });
@@ -252,7 +247,6 @@ var app = {
                         $('#divTOC').hide();
                         $('#divLoading').hide();
                         $('#divArticle').html(theHTML).show();
-                        alert('LOADED FROM DATABASE!!');
 
                     }
                     for (var i = 0; i < res.rows.length; i++) {
