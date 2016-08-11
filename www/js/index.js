@@ -42,7 +42,7 @@ var app = {
             alert('about to run update');
             tx.executeSql("UPDATE TOC SET isDownloaded = 0", [], function (tx, res) {
                 alert('update done');
-                tx.executeSql("SELECT id from Articles;", [], function (tx, res) {
+                tx.executeSql("SELECT id from Article;", [], function (tx, res) {
                     alert('select done');
                     for (var i = 0; i < res.rows.item.length; i++) {
                         alert('processing id ' + res.rows.item[i].id);
