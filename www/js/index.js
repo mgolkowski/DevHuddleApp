@@ -36,19 +36,19 @@ var app = {
 
     // set TOC.isDownloaded = true for all articles in Article table
     populateTOCisDownloaded: function () {
-        app.showMessage('Creating databases');
+        alert('in populateTOCisDownloaded');
 
         db.transaction(function (tx) {
-            tx.executeSql('UPDATE TOC SET isDownloaded = false;');
-            db.transaction(function (tx) {
+            tx.executeSql("UPDATE TOC SET isDownloaded = false", [], function (tx, res) {
+                alert('update done');
                 tx.executeSql("SELECT id from Articles;", [], function (tx, res) {
+                    alert('select done');
                     for (var i = 0; i < res.rows.item.length; i++) {
                         alert('processing id ' + res.rows.item[i].id);
                     }
                 });
             });
-        });
-        
+        });        
     },
 
     wipeAllData: function () {
