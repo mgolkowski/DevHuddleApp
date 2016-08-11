@@ -46,8 +46,8 @@ var app = {
                     alert('About to do select - BUG HERE !!! only the first gets returned/inserted?');
                     tx.executeSql("SELECT * FROM Article;", [], function (tx, res) {
 
-                        alert('total rows in article: ' + res.rows.item.length);
-                        for (var i = 0; i < res.rows.item.length; i++) {
+                        alert('total rows in article: ' + res.rows.length);
+                        for (var i = 0; i < res.rows.length; i++) {
                             alert('found article record: ' + res.rows.item(i).id);
                             tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id]);
                         }
@@ -242,7 +242,7 @@ var app = {
 
             db.transaction(function (tx) {
                 tx.executeSql("SELECT * FROM Article WHERE id = ?;", [parseInt(id)], function (tx, res) {
-                    if (res.rows.item.length > 0) {
+                    if (res.rows.length > 0) {
 
                         var articleHTML = res.rows.item(0).html;
                         var theHTML = '<img src="img/logo.png" style="max-width: 100%" /><div style="margin-bottom: 20px"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>';
@@ -255,7 +255,7 @@ var app = {
                         alert('LOADED FROM DATABASE!!');
 
                     }
-                    for (var i = 0; i < res.rows.item.length; i++) {
+                    for (var i = 0; i < res.rows.length; i++) {
                         tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id]);
                     }
                 });
