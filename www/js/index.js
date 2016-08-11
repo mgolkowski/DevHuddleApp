@@ -42,6 +42,7 @@ var app = {
 
                 tx.executeSql("SELECT * FROM Article;", [], function (tx, res) {
                     for (var i = 0; i < res.rows.item.length; i++) {
+                        alert('found article record');
                         tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id]);
                     }
                 });
@@ -244,6 +245,7 @@ var app = {
                         $('#divTOC').hide();
                         $('#divLoading').hide();
                         $('#divArticle').html(theHTML).show();
+                        alert('LOADED FROM DATABASE!!');
 
                     }
                     for (var i = 0; i < res.rows.item.length; i++) {
