@@ -39,6 +39,7 @@ var app = {
         alert('in populateTOCisDownloaded');
 
         db.transaction(function (tx) {
+            alert('about to run update');
             tx.executeSql("UPDATE TOC SET isDownloaded = false", [], function (tx, res) {
                 alert('update done');
                 tx.executeSql("SELECT id from Articles;", [], function (tx, res) {
