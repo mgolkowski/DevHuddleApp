@@ -44,7 +44,8 @@ var app = {
                 alert('update done');
 
                 tx.executeSql("SELECT * FROM Article;", [], function (tx, res) {
-                    alert('select done');
+                    alert('select done.');
+                    alert('rows: ' + res.rows.item.length);
                     for (var i = 0; i < res.rows.item.length; i++) {
                         alert('processing id ' + res.rows.item[i].id);
                     }
