@@ -40,8 +40,8 @@ var app = {
         db.transaction(function (tx) {
             tx.executeSql("UPDATE TOC SET isDownloaded = 0", [], function (tx, res) {
 
-                tx.executeSql("SELECT COUNT(*) AS cnt from LastTOCUpdate;", [], function (tx, res) {
-                    alert('count done');
+                tx.executeSql("SELECT COUNT(*) AS cnt from Article;", [], function (tx, res) {
+                    alert('count done. rows in article ...');
                     alert(res.rows.item(0).cnt);
                     alert('About to do select - BUG HERE !!! only the first gets returned/inserted?');
                     tx.executeSql("SELECT * FROM Article;", [], function (tx, res) {
