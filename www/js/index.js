@@ -40,7 +40,9 @@ var app = {
         db.transaction(function (tx) {
             tx.executeSql("UPDATE TOC SET isDownloaded = 0", [], function (tx, res) {
 
+                alert('updated. about to do select');
                 tx.executeSql("SELECT * FROM Article;", [], function (tx, res) {
+
                     alert('total rows in article: ' + res.rows.item.length);
                     for (var i = 0; i < res.rows.item.length; i++) {
                         alert('found article record: ' + res.rows.item(i).id);
@@ -299,6 +301,7 @@ var app = {
             alert('inserting record: ' + id);
             tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [id, theXML], function (tx, res) {
 
+                alert('inserted.');
                 app.populateTOCisDownloaded();
 
             }, function (e) {
