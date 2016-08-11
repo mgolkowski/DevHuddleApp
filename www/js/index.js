@@ -232,7 +232,25 @@ var app = {
 
         if (isDownloaded) { // article is cached, display cached article
 
-            alert('todo!!! display cached article');
+            tx.executeSql("SELECT * FROM Article WHERE id = ?;", [id], function (tx, res) {
+                alert('length: ' + res.rows.item.length);
+                if (res.rows.item.length > 0) {
+                    var articleHTML = res.rows.item(i).html;
+
+                    var theHTML = '<img src="img/logo.png" style="max-width: 100%" /><div style="margin-bottom: 20px"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>';
+                    theHTML += '<div style="margin-right: 20px">' + articleHTML + '</div>';
+                    theHTML += '<div style="margin: 20px 0 20px 0"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>'
+
+                    $('#divTOC').hide();
+                    $('#divLoading').hide();
+                    $('#divArticle').html(theHTML).show();
+
+                    alert('loaded from database!!!');
+                }
+                for (var i = 0; i < res.rows.item.length; i++) {
+                    tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id]);
+                }
+            });
 
         } else { // article not yet cached - grab it from server
 
@@ -274,12 +292,9 @@ var app = {
 
     saveArticle: function(id, theXML) {
         
-        alert('in saveArticle');
-
         db.transaction(function (tx) {
             tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [id, theXML], function (tx, res) {
 
-                alert('article inserted. about to refresh TOC');
                 app.populateTOCisDownloaded();
 
             }, function (e) {
