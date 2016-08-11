@@ -41,6 +41,7 @@ var app = {
             tx.executeSql("UPDATE TOC SET isDownloaded = 0", [], function (tx, res) {
 
                 tx.executeSql("SELECT * FROM Article;", [], function (tx, res) {
+                    alert('total rows in article: ' + res.rows.item.length);
                     for (var i = 0; i < res.rows.item.length; i++) {
                         alert('found article record: ' + res.rows.item(i).id);
                         tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id]);
