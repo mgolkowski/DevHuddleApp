@@ -34,6 +34,23 @@ var app = {
 
     },
 
+    // set TOC.isDownloaded = true for all articles in Article table
+    populateTOCisDownloaded: function () {
+        app.showMessage('Creating databases');
+
+        db.transaction(function (tx) {
+            tx.executeSql('UPDATE TOC SET isDownloaded = false;');
+            db.transaction(function (tx) {
+                tx.executeSql("SELECT id from Articles;", [], function (tx, res) {
+                    for (var i = 0; i < res.rows.item.length; i++) {
+                        alert('processing id ' + res.rows.item[i].id);
+                    }
+                });
+            });
+        });
+        
+    },
+
     wipeAllData: function () {
 
         app.showMessage('Wiping Data');
@@ -244,7 +261,16 @@ var app = {
                     $('#divArticle').html(theHTML).show();
 
                     // TODO: 1) insert into Article table
-                    // TODO: 2) refresh TOC.IsDownloaded
+                    alert('about to insert article');
+                    tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [$xml.find('id').text(), $xml.find('html').text()], function (tx, res) {
+
+                        alert('article inserted. about to refresh TOC');
+                        app.populateTOCisDownloaded();
+
+                    }, function (e) {
+                        app.showMessage("ERROR (checkTOCTimestamp): " + e.message);
+                    });
+
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("Error status :" + textStatus);
