@@ -252,8 +252,10 @@ var app = {
                     var xmlDoc = $.parseXML(data);
                     $xml = $(xmlDoc);
 
+                    var theXML = $xml.find('html').text();
+
                     var theHTML = '<img src="img/logo.png" style="max-width: 100%" /><div style="margin-bottom: 20px"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>';
-                    theHTML += '<div style="margin-right: 20px">' + $xml.find('html').text() + '</div>';
+                    theHTML += '<div style="margin-right: 20px">' + theXML + '</div>';
                     theHTML += '<div style="margin: 20px 0 20px 0"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>'
 
                     $('#divTOC').hide();
@@ -263,8 +265,8 @@ var app = {
                     // TODO: 1) insert into Article table
                     alert('about to insert article');
                     alert(id);
-                    alert($xml.find('html').text());
-                    tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [parseInt(id), $xml.find('html').text()], function (tx, res) {
+                    alert(theXML);
+                    tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [parseInt(id), theXML], function (tx, res) {
 
                         alert('article inserted. about to refresh TOC');
                         app.populateTOCisDownloaded();
