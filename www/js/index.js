@@ -263,8 +263,7 @@ var app = {
                     $('#divArticle').html(theHTML).show();
 
                     // TODO: 1) insert into Article table
-                    alert('about to insert article xx');
-                    return;
+                    alert('about to insert article yy');
                     alert(id);
                     alert(theXML);
                     tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [parseInt(id), theXML], function (tx, res) {
