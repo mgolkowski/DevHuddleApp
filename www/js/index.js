@@ -232,26 +232,26 @@ var app = {
 
         if (isDownloaded) { // article is cached, display cached article
 
-            alert('xxx about to run select for ' + id);
+            db.transaction(function (tx) {
+                tx.executeSql("SELECT * FROM Article WHERE id = ?;", [parseInt(id)], function (tx, res) {
+                    alert('length: ' + res.rows.item.length);
+                    if (res.rows.item.length > 0) {
+                        var articleHTML = res.rows.item(i).html;
 
-            tx.executeSql("SELECT * FROM Article;", [], function (tx, res) {
-                alert('length: ' + res.rows.item.length);
-                if (res.rows.item.length > 0) {
-                    var articleHTML = res.rows.item(i).html;
+                        var theHTML = '<img src="img/logo.png" style="max-width: 100%" /><div style="margin-bottom: 20px"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>';
+                        theHTML += '<div style="margin-right: 20px">' + articleHTML + '</div>';
+                        theHTML += '<div style="margin: 20px 0 20px 0"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>'
 
-                    var theHTML = '<img src="img/logo.png" style="max-width: 100%" /><div style="margin-bottom: 20px"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>';
-                    theHTML += '<div style="margin-right: 20px">' + articleHTML + '</div>';
-                    theHTML += '<div style="margin: 20px 0 20px 0"><a href="#" onclick="app.goToTOC(); return false">back to table of contents</a></div>'
+                        $('#divTOC').hide();
+                        $('#divLoading').hide();
+                        $('#divArticle').html(theHTML).show();
 
-                    $('#divTOC').hide();
-                    $('#divLoading').hide();
-                    $('#divArticle').html(theHTML).show();
-
-                    alert('loaded from database!!!');
-                }
-                for (var i = 0; i < res.rows.item.length; i++) {
-                    tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id]);
-                }
+                        alert('loaded from database!!!');
+                    }
+                    for (var i = 0; i < res.rows.item.length; i++) {
+                        tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id]);
+                    }
+                });
             });
 
         } else { // article not yet cached - grab it from server
