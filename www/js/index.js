@@ -238,7 +238,7 @@ var app = {
                     if (res.rows.item.length > 0) {
 
                         alert('getting html');
-                        var articleHTML = res.rows.item(i).html;
+                        var articleHTML = res.rows.item(0).html;
                         alert('done');
                         alert(articleHTML);
 
