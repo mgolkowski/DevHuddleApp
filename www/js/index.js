@@ -29,8 +29,8 @@ var app = {
         // TEST ONLY - don't wipe it on load once it's working
 
         // start initialization
-        app.wipeAllData();
-        //app.createDatabases();
+        //app.wipeAllData(); // <= FOR TESTING ONLY
+        app.createDatabases();
 
     },
 
@@ -296,10 +296,8 @@ var app = {
     saveArticle: function(id, theXML) {
         
         db.transaction(function (tx) {
-            alert('inserting record: ' + id);
             tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [id, theXML], function (tx, res) {
 
-                alert('inserted.');
                 app.populateTOCisDownloaded();
 
             }, function (e) {
