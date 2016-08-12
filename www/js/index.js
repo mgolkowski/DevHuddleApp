@@ -44,7 +44,7 @@ var app = {
 
                     var updatesToGo = res.rows.length;
 
-                    if (updatesToGo == 0) {
+                    if (updatesToGo == 0 && doLoadTOC) {
                         app.loadTOC();
                         return;
                     }
@@ -52,7 +52,7 @@ var app = {
                     for (var i = 0; i < res.rows.length; i++) {
                         tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id], function (tx, res) {
                             updatesToGo--;
-                            if (updatesToGo == 0) {
+                            if (updatesToGo == 0 && doLoadTOC) {
                                 app.loadTOC();
                             }
                         });
@@ -291,7 +291,6 @@ var app = {
                     $('#divArticle').html(theHTML).show();
 
                     // save article in database and update TOC
-                    alert('about to save');
                     app.saveArticle(parseInt(id), theXML);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
