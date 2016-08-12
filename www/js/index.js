@@ -37,12 +37,18 @@ var app = {
     // set TOC.isDownloaded = true for all articles in Article table
     populateTOCisDownloaded: function (doLoadTOC) {
 
+        alert('INSIDE populateTOCisDownloaded: ' + doLoadTOC);
+
         db.transaction(function (tx) {
+            alert('updating');
             tx.executeSql("UPDATE TOC SET isDownloaded = 0", [], function (tx, res) {
 
+                alert('selecting');
                 tx.executeSql("SELECT * FROM Article;", [], function (tx, res) {
 
+                    alert('selected');
                     var updatesToGo = res.rows.length;
+                    alert('rows to go: ' + updatesToGo);
 
                     for (var i = 0; i < res.rows.length; i++) {
                         tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id], function (tx, res) {
