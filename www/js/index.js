@@ -324,7 +324,7 @@ var app = {
         app.showMessage('Loading TOC for display');
         
         db.transaction(function (tx) {
-            tx.executeSql("SELECT * FROM TOC ORDER BY id;", [], function (tx, res) {
+            tx.executeSql("SELECT * FROM TOC ORDER BY id DESC;", [], function (tx, res) {
 
                 var numRows = res.rows.length;
                 var html = '<img src="img/logo.png" style="max-width: 100%" /><a href="#" onclick="app.exitFromApp(); return false">close app</a>';
