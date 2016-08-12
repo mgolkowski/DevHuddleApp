@@ -183,7 +183,7 @@ var app = {
 
     // reload the table of contents from the server then display
     refreshTOC: function (newTimestamp) {
-
+        var dtNow = new Date();
         app.showMessage('Retrieving new TOC from server');
 
         $.ajax({
