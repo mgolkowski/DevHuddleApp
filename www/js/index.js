@@ -149,6 +149,7 @@ var app = {
 
         
         $.ajax({
+            cache: false,
             headers: { "cache-control": "no-cache" },
             url: baseURL + lastUpdateURL, para: myRand,
             type: 'GET',
@@ -187,6 +188,7 @@ var app = {
         app.showMessage('Retrieving new TOC from server');
 
         $.ajax({
+            cache: false,
             headers: { "cache-control": "no-cache" },
             url: baseURL + TOC_URL, para: myRand,
             type: 'GET',
@@ -279,6 +281,7 @@ var app = {
 
             var myRand = Math.floor((Math.random() * 1000) + 1);
             $.ajax({
+                cache: false,
                 headers: { "cache-control": "no-cache" },
                 url: baseURL + ARTICLE_URL.replace("ARTICLEID", id), para: myRand,
                 type: 'GET',
