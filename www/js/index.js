@@ -188,7 +188,11 @@ var app = {
                 var xmlDoc = $.parseXML(data);
                 $xml = $(xmlDoc);
 
-                app.refreshTOCDB($xml);
+                db.transaction(function (tx) {
+                    tx.executeSql("UPDATE LastTOCUpdate SET lastUpdate = ?", [newTimestamp], function (tx, res) {
+                        app.refreshTOCDB($xml);
+                    });
+                });              
                 
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
