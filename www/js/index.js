@@ -90,7 +90,6 @@ var app = {
                     tx.executeSql('CREATE TABLE IF NOT EXISTS Article (id integer, html text)');
                     db.transaction(function (tx) {
 
-                        alert('databases created');
                         app.checkTOCTimestamp(tx);  // all done, continue initialization by updating table of contents
 
                     })
@@ -110,7 +109,6 @@ var app = {
 
             var numRows = res.rows.item(0).cnt; // number of rows in LastTOCUpdate
             
-            alert('numRows: ' + numRows);
             // no row = first time - set last update to 1900 to force initial refresh, then continue
             if (numRows == 0) { 
 
@@ -142,12 +140,16 @@ var app = {
     // Checks TOC timestamp on server.  If server timestamp > lastTimestamp then refresh TOC
     doServerTOCUpdate: function (lastTimestamp) {
 
+        alert('in doServerTOCUpdate: ' + lastTimestamp);
+
         app.showMessage('Checking for updates');
 
         $.ajax({
             url: baseURL + lastUpdateURL,
             type: 'GET',
             success: function (data) {
+
+                alert('ajax success');
 
                 var xmlDoc = $.parseXML(data),
                 $xml = $(xmlDoc),
