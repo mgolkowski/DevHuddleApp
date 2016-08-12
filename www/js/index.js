@@ -37,6 +37,8 @@ var app = {
     // set TOC.isDownloaded = true for all articles in Article table
     populateTOCisDownloaded: function (doLoadTOC) {
 
+        alert('inside populateTOCisDownloaded');
+
         db.transaction(function (tx) {
             tx.executeSql("UPDATE TOC SET isDownloaded = 0", [], function (tx, res) {
 
