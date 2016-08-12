@@ -113,7 +113,7 @@ var app = {
         tx.executeSql("SELECT COUNT(*) AS cnt from LastTOCUpdate;", [], function (tx, res) {
 
             var numRows = res.rows.item(0).cnt; // number of rows in LastTOCUpdate
-            
+           
             // no row = first time - set last update to 1900 to force initial refresh, then continue
             if (numRows == 0) { 
 
@@ -161,10 +161,12 @@ var app = {
 
                 if (dLastUpdateServer > dLastTimestamp) {   // TOC needs updating - grab new TOC from server
 
+                    alert('refreshing');
                     app.refreshTOC($lastUpdate.text());
 
                 } else { // TOC is up to date - just display it
                     
+                    alert('loading');
                     app.loadTOC();
 
                 }
