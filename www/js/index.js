@@ -35,22 +35,18 @@ var app = {
     },
 
     // set TOC.isDownloaded = true for all articles in Article table
-    populateTOCisDownloaded: function (doLoad) {
+    populateTOCisDownloaded: function () {
 
         db.transaction(function (tx) {
             tx.executeSql("UPDATE TOC SET isDownloaded = 0", [], function (tx, res) {
 
-                tx.executeSql("SELECT * FROM Article;", [], function (tx, res) {
+                tx.executeSql("SELECT COUNT(*) AS cnt from Article;", [], function (tx, res) {
+                    tx.executeSql("SELECT * FROM Article;", [], function (tx, res) {
 
-                    for (var i = 0; i < res.rows.length; i++) {
-                        tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id], function (tx, res) {
-                            if (i == res.rows.length - 1) {
-                                if (doLoad) {
-                                    app.loadTOC();
-                                }
-                            }
-                        });
-                    }                    
+                        for (var i = 0; i < res.rows.length; i++) {
+                            tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id]);
+                        }
+                    });
                 });                
             });
         });        
@@ -218,7 +214,7 @@ var app = {
 
                         rowCnt -= 1;
                         if (rowCnt == 0) {
-                            app.populateTOCisDownloaded(true);                            
+                            app.loadTOC();
                         }
                     }, function (e) {
                         rowCnt -= 1;
@@ -302,7 +298,7 @@ var app = {
         db.transaction(function (tx) {
             tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [id, theXML], function (tx, res) {
 
-                app.populateTOCisDownloaded(false);
+                app.populateTOCisDownloaded();
 
             }, function (e) {
 
