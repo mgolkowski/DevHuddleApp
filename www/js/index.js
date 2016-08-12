@@ -145,8 +145,9 @@ var app = {
     // Checks TOC timestamp on server.  If server timestamp > lastTimestamp then refresh TOC
     doServerTOCUpdate: function (lastTimestamp) {
 
-        app.showMessage('Checking for updates');
         var dtNow = new Date();
+        app.showMessage('Checking for updates : ' + baseURL + lastUpdateURL + '?' + dtNow.getTime());
+        
 
         $.ajax({
             url: baseURL + lastUpdateURL + '?' + dtNow.getTime(),
