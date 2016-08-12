@@ -210,16 +210,21 @@ var app = {
 
     refreshTOCDB: function (data) {
 
+        alert('in refreshTOCDB');
+
         app.showMessage('Refreshing TOC in database');
 
         db.transaction(function (tx) {
 
 
+            alert('about to delete');
             // 1) delete all TOC in database
             tx.executeSql("DELETE FROM TOC", [], function (tx, res) {
 
+                alert('deleted.');
                 // 2) loop through all TOC items and put into databse
                 var rowCnt = $(data).find('dataItem').length;
+                alert('rowCnt: ' + rowCnt);
 
                 $(data).find('dataItem').each(function () {
 
@@ -231,6 +236,7 @@ var app = {
 
                         rowCnt -= 1;
                         if (rowCnt == 0) {
+                            alert('about to call populateTOCisDownloaded');
                             app.populateTOCisDownloaded(true);                            
                         }
                     }, function (e) {
