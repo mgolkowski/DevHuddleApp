@@ -187,7 +187,7 @@ var app = {
         app.showMessage('Retrieving new TOC from server');
 
         $.ajax({
-            url: baseURL + TOC_URL,
+            url: baseURL + TOC_URL + '?' + dtNow.getTime(),
             type: 'GET',
             success: function (data) {
 
