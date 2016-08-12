@@ -249,9 +249,6 @@ var app = {
                         $('#divArticle').html(theHTML).show();
 
                     }
-                    for (var i = 0; i < res.rows.length; i++) {
-                        tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id]);
-                    }
                 });
             });
 
@@ -324,6 +321,7 @@ var app = {
                 var html = '<img src="img/logo.png" style="max-width: 100%" /><a href="#" onclick="app.exitFromApp(); return false">close app</a><h1 style="margin-top: 20px">Table of Contents</h1><hr/>';
                 for (var i = 0; i < numRows; i++) {
                     html += '<div class="clsDivTOC';
+                    alert('isDownloaded: ' + res.rows.item(i).isDownloaded);
                     if (res.rows.item(i).isDownloaded == 1) {
                         html += ' clsOffline';
                     }
