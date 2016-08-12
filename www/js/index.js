@@ -291,6 +291,7 @@ var app = {
                     $('#divArticle').html(theHTML).show();
 
                     // save article in database and update TOC
+                    alert('about to save');
                     app.saveArticle(parseInt(id), theXML);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
