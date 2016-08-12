@@ -49,7 +49,8 @@ var app = {
                             alert('about to update');
                             tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id], function (tx, res) {
                                 alert('update done. i: ' + i + ' doLoadTOC: ' + doLoadTOC);
-                                if (i == res.rows.length - 1 && doLoadTOC) {
+                                if (i == (res.rows.length - 1) && doLoadTOC) {
+                                    alert('about to load TOC');
                                     app.loadTOC();
                                 }
                             });
