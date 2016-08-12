@@ -328,6 +328,7 @@ var app = {
 
                 var numRows = res.rows.length;
                 var html = '<img src="img/logo.png" style="max-width: 100%" /><a href="#" onclick="app.exitFromApp(); return false">close app</a><h1 style="margin-top: 20px">Table of Contents</h1><hr/>';
+                html += '<div style="margin-right: 20px">';
                 for (var i = 0; i < numRows; i++) {
                     html += '<div class="clsDivTOC';
                     if (res.rows.item(i).isDownloaded == 1) {
@@ -335,6 +336,7 @@ var app = {
                     }
                     html +='"><a class="aTOC" href="#" onclick="app.loadArticle(' + res.rows.item(i).id + ',' + res.rows.item(i).isDownloaded + ')">' + res.rows.item(i).title + '</a><p class="pTOC">' + res.rows.item(i).dscr + '</p></div>';
                 }
+                html += '</div>';
                 $('#divTOC').html(html).show();
                 $('#divLoading').hide();
             });
