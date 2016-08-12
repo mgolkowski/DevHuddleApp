@@ -149,8 +149,6 @@ var app = {
             type: 'GET',
             success: function (data) {
 
-                alert('ajax success');
-
                 var xmlDoc = $.parseXML(data),
                 $xml = $(xmlDoc),
                 $lastUpdate = $xml.find("lastUpdate");
@@ -160,10 +158,13 @@ var app = {
 
                 if (dLastUpdateServer > dLastTimestamp) {   // TOC needs updating - grab new TOC from server
 
+                    alert('in here');
+                    alert($lastUpdate.text());
                     app.refreshTOC($lastUpdate.text());
 
                 } else { // TOC is up to date - just display it
                     
+                    alert('up to date');
                     app.loadTOC();
 
                 }
