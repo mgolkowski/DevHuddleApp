@@ -35,7 +35,7 @@ var app = {
     },
 
     // set TOC.isDownloaded = true for all articles in Article table
-    populateTOCisDownloaded: function () {
+    populateTOCisDownloaded: function (doLoadTOC) {
 
         db.transaction(function (tx) {
             tx.executeSql("UPDATE TOC SET isDownloaded = 0", [], function (tx, res) {
@@ -44,7 +44,11 @@ var app = {
                     tx.executeSql("SELECT * FROM Article;", [], function (tx, res) {
 
                         for (var i = 0; i < res.rows.length; i++) {
-                            tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id]);
+                            tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id], function (tx, res) {
+                                if (i == res.rows.length - 1 && doLoadTOC) {
+                                    app.loadTOC();
+                                }
+                            });
                         }
                     });
                 });                
@@ -152,6 +156,8 @@ var app = {
                 if (dLastUpdateServer > dLastTimestamp) {   // TOC needs updating - grab new TOC from server
 
                     alert('about to refresh');
+                    alert(dLastUpdateServer);
+                    alert(dLastTimestamp);
                     app.refreshTOC($lastUpdate.text());
 
                 } else { // TOC is up to date - just display it
@@ -216,7 +222,7 @@ var app = {
 
                         rowCnt -= 1;
                         if (rowCnt == 0) {
-                            app.loadTOC();
+                            app.populateTOCisDownloaded(true);                            
                         }
                     }, function (e) {
                         rowCnt -= 1;
@@ -297,7 +303,7 @@ var app = {
         db.transaction(function (tx) {
             tx.executeSql("INSERT INTO Article (id, html) VALUES (?, ?)", [id, theXML], function (tx, res) {
 
-                app.populateTOCisDownloaded();
+                app.populateTOCisDownloaded(false);
 
             }, function (e) {
 
