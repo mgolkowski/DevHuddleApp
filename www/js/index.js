@@ -37,18 +37,17 @@ var app = {
     // set TOC.isDownloaded = true for all articles in Article table
     populateTOCisDownloaded: function (doLoadTOC) {
 
-        alert('INSIDE populateTOCisDownloaded: ' + doLoadTOC);
-
         db.transaction(function (tx) {
-            alert('updating');
             tx.executeSql("UPDATE TOC SET isDownloaded = 0", [], function (tx, res) {
 
-                alert('selecting');
                 tx.executeSql("SELECT * FROM Article;", [], function (tx, res) {
 
-                    alert('selected');
                     var updatesToGo = res.rows.length;
-                    alert('rows to go: ' + updatesToGo);
+
+                    if (updatesToGo == 0) {
+                        app.loadTOC();
+                        return;
+                    }
 
                     for (var i = 0; i < res.rows.length; i++) {
                         tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id], function (tx, res) {
@@ -146,8 +145,6 @@ var app = {
     // Checks TOC timestamp on server.  If server timestamp > lastTimestamp then refresh TOC
     doServerTOCUpdate: function (lastTimestamp) {
 
-        alert('in doServerTOCUpdate: ' + lastTimestamp);
-
         app.showMessage('Checking for updates');
 
         $.ajax({
@@ -164,13 +161,10 @@ var app = {
 
                 if (dLastUpdateServer > dLastTimestamp) {   // TOC needs updating - grab new TOC from server
 
-                    alert('in here');
-                    alert($lastUpdate.text());
                     app.refreshTOC($lastUpdate.text());
 
                 } else { // TOC is up to date - just display it
                     
-                    alert('up to date');
                     app.loadTOC();
 
                 }
@@ -196,11 +190,8 @@ var app = {
                 var xmlDoc = $.parseXML(data);
                 $xml = $(xmlDoc);
 
-                alert('1');
                 db.transaction(function (tx) {
-                    alert('2');
                     tx.executeSql("UPDATE LastTOCUpdate SET lastUpdate = ?", [newTimestamp], function (tx, res) {
-                        alert('3');
                         app.refreshTOCDB($xml);
                     });
                 });              
@@ -216,21 +207,15 @@ var app = {
 
     refreshTOCDB: function (data) {
 
-        alert('in refreshTOCDB');
-
         app.showMessage('Refreshing TOC in database');
 
         db.transaction(function (tx) {
 
-
-            alert('about to delete');
             // 1) delete all TOC in database
             tx.executeSql("DELETE FROM TOC", [], function (tx, res) {
 
-                alert('deleted.');
                 // 2) loop through all TOC items and put into databse
                 var rowCnt = $(data).find('dataItem').length;
-                alert('rowCnt: ' + rowCnt);
 
                 $(data).find('dataItem').each(function () {
 
@@ -242,7 +227,6 @@ var app = {
 
                         rowCnt -= 1;
                         if (rowCnt == 0) {
-                            alert('about to call populateTOCisDownloaded');
                             app.populateTOCisDownloaded(true);                            
                         }
                     }, function (e) {
