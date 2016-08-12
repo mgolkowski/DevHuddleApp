@@ -1,4 +1,9 @@
 <TOC>
+  <dataItem>
+    <id>3</id>
+    <title>THIS IS A TEST</title>
+    <dscr>This app can refresh at any time</dscr>
+  </dataItem>
 	<dataItem>
 		<id>1</id>
 		<title>Supermodel swaps high heels for high hopes in Peru</title>
@@ -8,5 +13,5 @@
 		<id>2</id>
 		<title>Help Syrian refugees in crisis</title>
 		<dscr>Almost five years of conflict in Syria has left more than four million refugees seeking shelter in neighbouring countries, and countless more struggling to reach safety in Europe. An increasing number of those fleeing the Syrian conflict are unaccompanied children.</dscr>
-	</dataItem>
+	</dataItem>  
 </TOC>

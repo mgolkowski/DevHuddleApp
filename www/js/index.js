@@ -327,8 +327,8 @@ var app = {
             tx.executeSql("SELECT * FROM TOC ORDER BY id;", [], function (tx, res) {
 
                 var numRows = res.rows.length;
-                var html = '<img src="img/logo.png" style="max-width: 100%" /><a href="#" onclick="app.exitFromApp(); return false">close app</a><h1 style="margin-top: 20px">Table of Contents</h1><hr/>';
-                html += '<div style="margin-right: 20px">';
+                var html = '<img src="img/logo.png" style="max-width: 100%" /><a href="#" onclick="app.exitFromApp(); return false">close app</a>';
+                html += '<div style="margin-right: 20px"><h1 style="margin-top: 20px">Table of Contents</h1><hr/>';
                 for (var i = 0; i < numRows; i++) {
                     html += '<div class="clsDivTOC';
                     if (res.rows.item(i).isDownloaded == 1) {
