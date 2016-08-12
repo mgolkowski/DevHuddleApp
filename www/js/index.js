@@ -145,12 +145,11 @@ var app = {
     // Checks TOC timestamp on server.  If server timestamp > lastTimestamp then refresh TOC
     doServerTOCUpdate: function (lastTimestamp) {
 
-        var dtNow = new Date();
-        app.showMessage('Checking for updates');
-        alert(baseURL + lastUpdateURL + '?' + dtNow.getTime());
+        var myRand = Math.floor((Math.random() * 1000) + 1);
+
         
         $.ajax({
-            url: baseURL + lastUpdateURL + '?' + dtNow.getTime(),
+            url: baseURL + lastUpdateURL, para: myRand,
             type: 'GET',
             success: function (data) {
 
@@ -183,11 +182,11 @@ var app = {
 
     // reload the table of contents from the server then display
     refreshTOC: function (newTimestamp) {
-        var dtNow = new Date();
+        var myRand = Math.floor((Math.random() * 1000) + 1);
         app.showMessage('Retrieving new TOC from server');
 
         $.ajax({
-            url: baseURL + TOC_URL + '?' + dtNow.getTime(),
+            url: baseURL + TOC_URL, para: myRand,
             type: 'GET',
             success: function (data) {
 
@@ -276,8 +275,9 @@ var app = {
 
             app.showMessage('Loading article from server');
 
+            var myRand = Math.floor((Math.random() * 1000) + 1);
             $.ajax({
-                url: baseURL + ARTICLE_URL.replace("ARTICLEID", id),
+                url: baseURL + ARTICLE_URL.replace("ARTICLEID", id), para: myRand,
                 type: 'GET',
                 success: function (data) {
 
