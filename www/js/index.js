@@ -156,13 +156,10 @@ var app = {
 
                 if (dLastUpdateServer > dLastTimestamp) {   // TOC needs updating - grab new TOC from server
 
-                    alert('about to refresh: ' + $lastUpdate.text());
-                    alert(dLastUpdateServer + ' > ' + dLastTimestamp);
                     app.refreshTOC($lastUpdate.text());
 
                 } else { // TOC is up to date - just display it
                     
-                    alert('about to load');
                     app.loadTOC();
 
                 }
