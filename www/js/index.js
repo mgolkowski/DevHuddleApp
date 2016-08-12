@@ -37,8 +37,6 @@ var app = {
     // set TOC.isDownloaded = true for all articles in Article table
     populateTOCisDownloaded: function (doLoadTOC) {
 
-        alert('inside populateTOCisDownloaded');
-
         db.transaction(function (tx) {
             tx.executeSql("UPDATE TOC SET isDownloaded = 0", [], function (tx, res) {
 
@@ -47,12 +45,9 @@ var app = {
                     var updatesToGo = res.rows.length;
 
                     for (var i = 0; i < res.rows.length; i++) {
-                        alert('about to update');
                         tx.executeSql("UPDATE TOC SET isDownloaded = 1 WHERE id = ?", [res.rows.item(i).id], function (tx, res) {
                             updatesToGo--;
-                            alert('updatesToGo: ' + updatesToGo);
                             if (updatesToGo == 0) {
-                                alert('about to load TOC');
                                 app.loadTOC();
                             }
                         });
@@ -162,9 +157,7 @@ var app = {
                 if (dLastUpdateServer > dLastTimestamp) {   // TOC needs updating - grab new TOC from server
 
                     alert('about to refresh');
-                    alert(dLastUpdateServer);
-                    alert(dLastTimestamp);
-                    app.refreshTOC($lastUpdate.text());
+                    app.refreshTOC(lastTimestamp);
 
                 } else { // TOC is up to date - just display it
                     
