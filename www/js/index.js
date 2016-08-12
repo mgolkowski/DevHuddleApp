@@ -166,7 +166,7 @@ var app = {
 
                 } else { // TOC is up to date - just display it
                     
-                    alert('loading');
+                    alert('loading (' + dLastUpdateServer + ' > ' + dLastTimestamp);
                     app.loadTOC();
 
                 }
