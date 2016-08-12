@@ -233,7 +233,6 @@ var app = {
                         rowCnt -= 1;
                         alert("ERROR: " + e.message);
                     });
-                        
                 });
 
                 // 3) update timestamp
@@ -295,9 +294,11 @@ var app = {
                     app.saveArticle(parseInt(id), theXML);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert("Error status :" + textStatus);
-                    alert("Error type :" + errorThrown);
-                    alert("Error message :" + XMLHttpRequest.responseXML);
+
+                    alert('Unable to download article - please make sure you are connected to the internet and try again');
+                    $('#divLoading').hide();
+                    $('#divArticle').hide();
+                    $('#divTOC').show();
                 }
             });
         }
