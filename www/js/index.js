@@ -190,8 +190,11 @@ var app = {
                 var xmlDoc = $.parseXML(data);
                 $xml = $(xmlDoc);
 
+                alert('1');
                 db.transaction(function (tx) {
+                    alert('2');
                     tx.executeSql("UPDATE LastTOCUpdate SET lastUpdate = ?", [newTimestamp], function (tx, res) {
+                        alert('3');
                         app.refreshTOCDB($xml);
                     });
                 });              
