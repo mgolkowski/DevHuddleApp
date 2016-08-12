@@ -146,9 +146,10 @@ var app = {
     doServerTOCUpdate: function (lastTimestamp) {
 
         app.showMessage('Checking for updates');
+        var dtNow = new Date();
 
         $.ajax({
-            url: baseURL + lastUpdateURL,
+            url: baseURL + lastUpdateURL + '?' + dtNow.getTime(),
             type: 'GET',
             success: function (data) {
 
