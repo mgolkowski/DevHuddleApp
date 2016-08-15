@@ -117,8 +117,7 @@ var app = {
             // no row = first time - set last update to 1900 to force initial refresh, then continue
             if (numRows == 0) { 
 
-                alert('first time');
-
+                
                 tx.executeSql("INSERT INTO LastTOCUpdate (lastUpdate) VALUES (?)", ["1900-01-01"], function (tx, res) {                           
 
                     app.doServerTOCUpdate("1900-01-01");
@@ -175,9 +174,7 @@ var app = {
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("Error1 status :" + textStatus);
-                alert("Error1 type :" + errorThrown);
-                alert("Error1 message :" + XMLHttpRequest.responseXML);
+                app.loadTOC(); // can't connect online - try to load it anyways
             }
         });        
     },
