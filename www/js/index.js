@@ -173,9 +173,9 @@ var app = {
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("Error status :" + textStatus);
-                alert("Error type :" + errorThrown);
-                alert("Error message :" + XMLHttpRequest.responseXML);
+                alert("Error1 status :" + textStatus);
+                alert("Error1 type :" + errorThrown);
+                alert("Error1 message :" + XMLHttpRequest.responseXML);
             }
         });        
     },
@@ -234,14 +234,14 @@ var app = {
                         }
                     }, function (e) {
                         rowCnt -= 1;
-                        alert("ERROR: " + e.message);
+                        alert("ERROR2: " + e.message);
                     });
                 });
 
                 // 3) update timestamp
 
             }, function (e) {
-                alert("ERROR: " + e.message);
+                alert("ERROR3: " + e.message);
             });
         });
     },
@@ -319,7 +319,7 @@ var app = {
 
             }, function (e) {
 
-                alert('error here');
+                alert('error4 here');
                 app.showMessage("ERROR (checkTOCTimestamp): " + e.message);
             });
         });
