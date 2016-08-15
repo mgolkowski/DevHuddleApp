@@ -164,12 +164,10 @@ var app = {
 
                 if (dLastUpdateServer > dLastTimestamp) {   // TOC needs updating - grab new TOC from server
 
-                    alert('refreshing');
                     app.refreshTOC($lastUpdate.text());
 
                 } else { // TOC is up to date - just display it
                     
-                    alert('loading (' + dLastUpdateServer + ' > ' + dLastTimestamp);
                     app.loadTOC();
 
                 }
@@ -205,9 +203,7 @@ var app = {
                 
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("Error status :" + textStatus);
-                alert("Error type :" + errorThrown);
-                alert("Error message :" + XMLHttpRequest.responseXML);
+                app.loadTOC(); // can't connect to internet, try loading it from database anyways                
             }
         });
     },
