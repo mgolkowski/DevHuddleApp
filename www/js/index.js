@@ -117,6 +117,8 @@ var app = {
             // no row = first time - set last update to 1900 to force initial refresh, then continue
             if (numRows == 0) { 
 
+                alert('first time');
+
                 tx.executeSql("INSERT INTO LastTOCUpdate (lastUpdate) VALUES (?)", ["1900-01-01"], function (tx, res) {                           
 
                     app.doServerTOCUpdate("1900-01-01");
@@ -143,7 +145,7 @@ var app = {
     },
     
     // Checks TOC timestamp on server.  If server timestamp > lastTimestamp then refresh TOC
-    doServerTOCUpdate: function (lastTimestamp) {
+                 : function (lastTimestamp) {
 
         var myRand = Math.floor((Math.random() * 1000) + 1);
 
