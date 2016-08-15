@@ -145,7 +145,7 @@ var app = {
     },
     
     // Checks TOC timestamp on server.  If server timestamp > lastTimestamp then refresh TOC
-                 : function (lastTimestamp) {
+    doServerTOCUpdate: function (lastTimestamp) {
 
         var myRand = Math.floor((Math.random() * 1000) + 1);
 
